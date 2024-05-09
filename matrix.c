@@ -30,7 +30,13 @@ Matrix* dot(Matrix* m1, Matrix* m2){
 
 }
 
-
+Matrix* copy(Matrix* m){
+    Matrix *p = create(m->row, m->col, m->size, m->type);
+    char *tar = p->entry;
+    for (int i = 0;i < m->row * m->col * m->size;i += sizeof(char))
+        *(tar + i) = *((char*)m->entry + i);
+    return p;
+}
 
 void print_float(float* value){
     printf("%f ", *value);

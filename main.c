@@ -16,5 +16,10 @@ int main(){
     printf("\n");
     print_matrix(mDot, double);
 
+    printf("\n");
+    Matrix *mDot_copy = copy(mDot);
+    printf("%p\n", mDot);
+    printf("%p\n", mDot_copy);
+    print_matrix(mDot_copy, double);
 }
 

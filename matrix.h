@@ -1,4 +1,4 @@
-
+#include<stdlib.h>
 
 #ifndef MATRIX_H
 #define MATRIX_H
@@ -39,7 +39,13 @@
             print_##type((type*)matrix->entry + i * cols + j);\
         printf("\n");\
     }\
-}/*見泰迪熊實作*/
+}
+
+#define free_matrix(matrix){\
+    free(matrix->entry);\
+    free(matrix);\
+    matrix = NULL;\
+}
 typedef enum {
     SHORT,
     INT,
@@ -56,6 +62,7 @@ typedef struct{
 
 Matrix* create(int, int, size_t, number_t);
 Matrix* dot(Matrix*, Matrix*);
+Matrix* copy(Matrix*);
 void print_float(float*);
 void print_int(int*);
 void print_double(double*);
