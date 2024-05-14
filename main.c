@@ -73,9 +73,12 @@ int main(){
     //multi thread time test
     for (int i = 0;i < 100;i++){
         start_time = omp_get_wtime();
-        add(m1, m2);
+        Matrix* output = dot(m1, m2);
         time_count += omp_get_wtime() - start_time;
+        free_matrix(output);
     }
+    free_matrix(m1);
+    free_matrix(m2);
 
     
     printf("avg time: %lf", time_count / 100);

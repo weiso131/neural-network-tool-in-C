@@ -15,8 +15,8 @@ const int THREAD_NUM = 4;
 Matrix* dot(Matrix* m1, Matrix* m2){
     sizeCheck("dot return NULL")
     Matrix* result = create(m1->row, m1->col);
-    omp_set_num_threads(THREAD_NUM);
-    #pragma omp parallel for schedule(static)
+    //omp_set_num_threads(THREAD_NUM);
+    //#pragma omp parallel for schedule(static)
     for (int i = 0;i < m1->row;++i){
         for (int j = 0;j < m1->col;++j)
             *((result->entry) + i * m1->col + j) = \
