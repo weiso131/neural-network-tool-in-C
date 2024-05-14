@@ -1,13 +1,9 @@
 #include<stdio.h>
-#include<stdlib.h>
 #include<string.h>
 
 #include<omp.h>
 
 #include "matrix.h"
-
-
-
 
 Matrix* create(int row, int col, size_t size, number_t type){
     Matrix* m = malloc(sizeof(Matrix));
@@ -15,28 +11,80 @@ Matrix* create(int row, int col, size_t size, number_t type){
     m->entry = malloc(row * col * size);
     return m;
 }
-
-
-
-Matrix* dot(Matrix* m1, Matrix* m2){
-    if (m1->row != m2->row || m1->col != m2->col || m1->type != m2->type) 
-        return NULL;
-
-    Matrix* result = create(m1->row, m1->col, m1->size, m1->type);
-
-    for (int i = 0;i < m1->row * m1->col;++i)
-        entryOperation(result->entry, m1->entry, m2->entry, i, i, i, m1->type, *)
-    return result;
-
+Matrix* identity(int n, size_t size, number_t type){
+    Matrix* m = create(n, n, size, type);
+    switch (type){
+    case SHORT:
+        identity_fill(m, short)
+        break;
+    case INT:
+        identity_fill(m, int)
+        break;
+    case FLOAT:
+        identity_fill(m, float)
+        break;
+    case DOUBLE:
+        identity_fill(m, double)
+        break;
+    default:
+        identity_fill(m, long long)
+        break;
+    }
+    return m;
 }
 
 Matrix* copy(Matrix* m){
     Matrix *p = create(m->row, m->col, m->size, m->type);
-    char *tar = p->entry;
-    for (int i = 0;i < m->row * m->col * m->size;i += sizeof(char))
-        *(tar + i) = *((char*)m->entry + i);
+    char *tar = p->entry, *end = tar + m->row * m->col * m->size, *src = m->entry;
+    for (;tar != end;tar++, src++)
+        *tar = *src;
     return p;
 }
+
+#define index_value_compare(type){\
+    int bigger = *((type*)matrix->entry + i * mul_i + j * mul_j) > *((type*)matrix->entry + i * mul_i + maxIndex * mul_j);\
+    maxIndex = (1 - bigger) * maxIndex + bigger * j;\
+}
+
+Matrix* argmax(Matrix* matrix, int dim){
+    int n = matrix->row * (1 - dim) + matrix->col * dim, \
+        m = matrix->col * (1 - dim) + matrix->row * dim, \
+        mul_i = matrix->col * (1 - dim) + dim, \
+        mul_j = matrix->col * dim + (1 - dim);
+
+    Matrix *argmaxArray = create(n, 1, sizeof(int), INT);
+
+    for (int i = 0;i < n;i++){
+        int maxIndex = 0;
+        for (int j = 0;j < m;j++){
+            switch (matrix->type){
+            case SHORT:
+                index_value_compare(short)
+                break;
+            case INT:
+                index_value_compare(int)
+                break;
+            case FLOAT:
+                index_value_compare(float)
+                break;
+            case DOUBLE:
+                index_value_compare(double)
+                break;
+            default:
+                index_value_compare(long long)
+                break;
+            }\
+        }
+        *((int*)argmaxArray->entry + i) = maxIndex;
+
+    }
+    
+
+    return argmaxArray;
+    
+}
+
+
 
 void print_float(float* value){
     printf("%f ", *value);
