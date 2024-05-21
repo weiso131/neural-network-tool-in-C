@@ -3,6 +3,11 @@
 #include "matrix.h"
 #include "matrix_ops.h"
 
+double test_apply(double x){
+    return 0;
+}
+
+
 int main(){
     Matrix *m1 = create(3, 3), *m2 = create(3, 1);
     fill(m1, 2)
@@ -67,20 +72,40 @@ int main(){
 
     double start_time, time_count = 0;
     
-    m1 = create(1000, 1000), m2 = create(1000, 1000);
-    fill(m1, 2)
+    
+
+    m1 = identity(10), m2 = create(10, 1);
     fill(m2, 4)
-    //multi thread time test
-    for (int i = 0;i < 100;i++){
-        start_time = omp_get_wtime();
-        Matrix* output = dot(m1, m2);
-        time_count += omp_get_wtime() - start_time;
-        free_matrix(output);
-    }
+
+    Matrix *mul_result = mul(m1, m2);
+
+    printf("test mul\n");
+    print_matrix(mul_result)
+
     free_matrix(m1);
     free_matrix(m2);
 
+
+    m1 = identity(4);
+    Matrix* scale_result = scale(m1, 4);
+
+    printf("test scale\n");
+    print_matrix(scale_result)
+
+
+    random_fill(m1)
     
-    printf("avg time: %lf", time_count / 100);
+
+    Matrix *m1_T = transpose(m1);
+    printf("test transpose\n");
+    printf("origin:\n");
+    print_matrix(m1)
+    printf("transpose:\n");
+    print_matrix(m1_T)
+
+    Matrix *apply0 = apply(m1_T, test_apply);
+    printf("test apply\n");
+    print_matrix(apply0)
+
 }
 
