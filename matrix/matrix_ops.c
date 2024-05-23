@@ -39,10 +39,10 @@ Matrix* mul(Matrix* m1, Matrix* m2){
 }
 
 Matrix* dot(Matrix* m1, Matrix* m2){
-    sizeCheck("dot return NULL")
+    sizeCheck("dot return NULL");
     Matrix* result = create(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
-    operation(*)
+    operation(*);
     return result;
 }
 
@@ -55,12 +55,21 @@ Matrix* scale(Matrix* m1, double x){
 }
 
 Matrix* add(Matrix* m1, Matrix* m2){
-    sizeCheck("add return NULL")
+    sizeCheck("add return NULL");
     Matrix* result = create(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
-    operation(+)
+    operation(+);
     return result;
 }
+
+Matrix* sub(Matrix* m1, Matrix* m2){
+    sizeCheck("sub return NULL");
+    Matrix* result = create(m1->row, m1->col);
+    #pragma omp parallel for schedule(static)
+    operation(-);
+    return result;
+}
+
 Matrix* addScale(Matrix* m1, double x){
     Matrix* result = create(m1->row, m1->col);
     #pragma omp parallel for schedule(static)

@@ -106,6 +106,18 @@ int main(){
     Matrix *apply0 = apply(m1_T, test_apply);
     printf("test apply\n");
     print_matrix(apply0)
+    
+    free_matrix(m1);
+    printf("test sub\n");
+    m1 = create(4, 4), m2 = create(4, 4);
+    fill(m1, 2)
+    fill(m2, 1)
+    
+    Matrix *sub_result = sub(m1 , m2);
+
+    
+    print_matrix(sub_result)
+
 
 }
 

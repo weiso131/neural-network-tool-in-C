@@ -64,6 +64,6 @@ Matrix* argmax(Matrix*, int);
 
 double NormalDistributionRand();
 //常態分布
-//https://stackoverflow.com/questions/2325472/generate-random-numbers-following-a-normal-distribution-in-c-c
+//泰迪
 
 #endif

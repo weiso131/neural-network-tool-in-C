@@ -8,6 +8,7 @@ typedef double (*act_f) (double x);
 
 Matrix* mul(Matrix*, Matrix*);
 Matrix* add(Matrix*, Matrix*);
+Matrix* sub(Matrix*, Matrix*);
 Matrix* dot(Matrix*, Matrix*);
 
 Matrix* scale(Matrix*, double);
