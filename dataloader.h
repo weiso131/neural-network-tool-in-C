@@ -11,7 +11,7 @@ typedef struct{
     Matrix **data, **label;
     int batch_size, data_length;//一個batch的大小,資料的數量
     int *indice;//資料的順序，有shuffle可以把順序打亂
-    batch_data* (*get_batch)(int);//train的時候迭代這些資料
+    batch_data* (*get_batch)(dataloader*, int);//train的時候迭代這些資料
 
 }dataloader;
 
