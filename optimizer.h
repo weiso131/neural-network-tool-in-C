@@ -5,7 +5,8 @@
 
 typedef struct{
     double init_lr, beta1, beta2, episode;
-    Matrix* (*optimize)(optim*, Matrix*, double);
+    Matrix* dw, db; 
+    Matrix* (*optimize)(optim*, Matrix*, double, Matrix*, Matrix*);//self, dw, lr, Vdw, Sdw
 
 }optim;
 

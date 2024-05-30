@@ -32,7 +32,7 @@ Matrix* predict_impl(Model *self, Matrix *data);
 */
 
 
-void train_impl(Model *self, optim, int, dataloader*, dataloader*, loss_f*);
+void train_impl(Model *self, optim*, int, dataloader*, dataloader*, loss_f*);
 /*
 
 */
