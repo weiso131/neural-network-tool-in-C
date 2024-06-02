@@ -12,18 +12,6 @@ typedef struct{
 }Matrix;
 
 
-#define fill(matrix, value){\
-    for (int i = matrix->row * matrix->col; i--;)\
-        *((matrix->entry) + i) = (double)value;\
-}
-
-
-#define random_fill(matrix){\
-    /*一定是浮點數*/\
-    srand(time(NULL));\
-    for (int i = matrix->row * matrix->col; i--;)\
-        *((matrix->entry) + i) = ((double) rand() / (RAND_MAX) * 2 - 1);\
-}
 
 #define flatten_matrix(matrix){\
     matrix->row = matrix->row * matrix->col;\
@@ -36,17 +24,11 @@ typedef struct{
     matrix = NULL;\
 }
 
+void fill(Matrix *matirx, double value);
 
-#define print_matrix(matrix){\
-    int rows = matrix->row, cols = matrix->col;\
-    for (int i = 0;i < rows;i++){\
-        for (int j = 0;j < cols;j++)\
-            printf("%lf ", *(matrix->entry + i * cols + j));\
-        printf("\n");\
-    }\
-}
+void random_fill(Matrix *matrix);
 
-
+void print_matrix(Matrix *matrix);
 
 Matrix* create(int, int);
 //創建一個新的矩陣

@@ -45,8 +45,24 @@ Matrix* argmax(Matrix* matrix, int dim){
 
 
 
-
-
+void random_fill(Matrix *matrix){
+    srand(time(NULL));
+    for (int i = matrix->row * matrix->col; i--;){
+        *(matrix->entry + i) = ((double) rand() / (RAND_MAX) * 2 - 1);
+    }
+}
+void print_matrix(Matrix *matrix){
+    int rows = matrix->row, cols = matrix->col;
+    for (int i = 0;i < rows;i++){
+        for (int j = 0;j < cols;j++)
+            printf("%lf ", *(matrix->entry + i * cols + j));
+        printf("\n");
+    }\
+}
+void fill(Matrix *matrix, double value){
+    for (int i = matrix->row * matrix->col; i--;)
+        *((matrix->entry) + i) = (double)value;
+}
 
 
 
