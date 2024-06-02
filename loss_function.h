@@ -2,7 +2,7 @@
 
 typedef struct {
     Matrix* (*get_gredient)(Matrix*, Matrix*);//模型預測, 正確答案值
-    double* (*get_loss_item)(Matrix*, Matrix*);//模型預測, 正確答案值
+    double (*get_loss_item)(Matrix*, Matrix*);//模型預測, 正確答案值
 }loss_f;
 
 loss_f* init_CrossEntropy();
