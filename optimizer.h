@@ -4,8 +4,7 @@
 #define OPTIMIZER_H
 
 typedef struct{
-    double init_lr, beta1, beta2, episode;
-    Matrix* dw, db; 
+    double init_lr, beta1, beta2, epsilon;
     Matrix* (*optimize)(optim*, Matrix*, double, Matrix*, Matrix*);//self, dw, lr, Vdw, Sdw
 
 }optim;
