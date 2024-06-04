@@ -54,9 +54,10 @@ void random_fill(Matrix *matrix){
 void print_matrix(Matrix *matrix){
     int rows = matrix->row, cols = matrix->col;
     for (int i = 0;i < rows;i++){
+        printf("| ");
         for (int j = 0;j < cols;j++)
-            printf("%lf ", *(matrix->entry + i * cols + j));
-        printf("\n");
+            printf("%.5lf ", *(matrix->entry + i * cols + j));
+        printf(" |\n");
     }\
 }
 void fill(Matrix *matrix, double value){

@@ -10,8 +10,8 @@ double test_apply(double x){
 
 int main(){
     Matrix *m1 = create(3, 3), *m2 = create(3, 1);
-    fill(m1, 2)
-    fill(m2, 4)
+    fill(m1, 2);
+    fill(m2, 4);
 
     printf("test fill, create\n");
     print_matrix(m1);
@@ -32,18 +32,18 @@ int main(){
 
     Matrix* identity_matrix = identity(2);
     printf("test identity matrix\n");
-    print_matrix(identity_matrix)
+    print_matrix(identity_matrix);
     
     flatten_matrix(identity_matrix)
     printf("test flatten\n");
 
-    print_matrix(identity_matrix)
+    print_matrix(identity_matrix);
 
     free_matrix(identity_matrix);
 
 
     Matrix *normal = create(4, 3);
-    random_fill(normal)
+    random_fill(normal);
     printf("test random\n");
     print_matrix(normal);
 
@@ -61,8 +61,8 @@ int main(){
 
 
     m1 = create(3, 3), m2 = create(3, 3);
-    fill(m1, 2)
-    fill(m2, 4)
+    fill(m1, 2);
+    fill(m2, 4);
     Matrix *mAdd = add(m1, m2);
     printf("test add\n");
     print_matrix(mAdd);
@@ -75,12 +75,12 @@ int main(){
     
 
     m1 = identity(10), m2 = create(10, 1);
-    fill(m2, 4)
+    fill(m2, 4);
 
     Matrix *mul_result = mul(m1, m2);
 
     printf("test mul\n");
-    print_matrix(mul_result)
+    print_matrix(mul_result);
 
     free_matrix(m1);
     free_matrix(m2);
@@ -90,33 +90,33 @@ int main(){
     Matrix* scale_result = scale(m1, 4);
 
     printf("test scale\n");
-    print_matrix(scale_result)
+    print_matrix(scale_result);
 
 
-    random_fill(m1)
+    random_fill(m1);
     
 
     Matrix *m1_T = transpose(m1);
     printf("test transpose\n");
     printf("origin:\n");
-    print_matrix(m1)
+    print_matrix(m1);
     printf("transpose:\n");
-    print_matrix(m1_T)
+    print_matrix(m1_T);
 
     Matrix *apply0 = apply(m1_T, test_apply);
     printf("test apply\n");
-    print_matrix(apply0)
+    print_matrix(apply0);
     
     free_matrix(m1);
     printf("test sub\n");
     m1 = create(4, 4), m2 = create(4, 4);
-    fill(m1, 2)
-    fill(m2, 1)
+    fill(m1, 2);
+    fill(m2, 1);
     
     Matrix *sub_result = sub(m1 , m2);
 
     
-    print_matrix(sub_result)
+    print_matrix(sub_result);
 
 
 }

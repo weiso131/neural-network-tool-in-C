@@ -10,8 +10,8 @@ int main(){
     double start_time, time_count = 0;
     
     m1 = create(1024, 1024), m2 = create(1024, 1);
-    fill(m1, 2)
-    fill(m2, 4)
+    fill(m1, 2);
+    fill(m2, 4);
     //multi thread time test
     for (int i = 0;i < 100;i++){
         start_time = omp_get_wtime();

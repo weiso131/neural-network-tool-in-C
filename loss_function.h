@@ -1,8 +1,9 @@
 #include "matrix/matrix.h"
+#include "matrix/matrix_ops.h"
 
 typedef struct {
-    Matrix* (*get_gredient)(Matrix*, Matrix*);//模型預測, 正確答案值
-    double (*get_loss_item)(Matrix*, Matrix*);//模型預測, 正確答案值
+    Matrix* (*get_gredient)(Matrix* predict, Matrix* label);//模型預測, 正確答案值
+    double (*get_loss_item)(Matrix* predict, Matrix* label);//模型預測, 正確答案值
 }loss_f;
 
 loss_f* init_CrossEntropy();
