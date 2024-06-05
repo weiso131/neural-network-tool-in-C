@@ -1,7 +1,7 @@
 
 #include "matrix/matrix.h"
 #include "matrix/matrix_ops.h"
-
+#include "optimizer.h"
 #ifndef NN_H
 #define NN_H
 typedef enum {
@@ -41,37 +41,32 @@ nn* create_nn();
 typedef struct linear_{
     Matrix *w;//n x m
     Matrix *b;//n x 1
+    Matrix *vdw;//n x m
+    Matrix *sdw;//n x m
+    Matrix *vdb;//n x 1
+    Matrix *sdb;//n x 1
     Matrix* (*forward)(struct linear_* self, Matrix* x);
-    Matrix* (*w_backward)(struct linear_* self, Matrix* x, Matrix* dz);
-    Matrix* (*b_backward)(struct linear_* self, Matrix* dz);
+    void (*backward)(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer);
     /*
     forward:
         輸入一個matrix x
         計算mul(w, x) + b並輸出該結果
 
-    w_backward:
-        輸入兩個matrix分別代表:
-        1. 該層輸出Z的導數dZ
-        2. 上一層輸出經過活化函數在轉置的g(Z)T
+    backward:
+        輸入dz, x, optimzizer
+        dz是dz
+        x是上一層的輸出
+        optimizer是optimizer
 
-        根據公式計算dW並輸出
+        丟進去更新w, b
+        就...反向傳播
+        rya
 
-    b_backward:
-        輸入matrix代表該層輸出Z的導數dZ
-        
-        根據公式計算db並輸出
-
-    關於反向傳播的update:
-        考量optimizor的實作，先把dW,db算出來
-        再交由train內部實作:
-        w = w - optim_name->optimize(optim_name, dW, lr);
-        b = b - optim_name->optimize(optim_name, db, lr);
     */
 }Linear; 
 nn_node* Linear_init(int n, int m, Matrix* specify_w, Matrix* specify_b);//n, m, 指定w, 指定b
 Matrix* Linear_forward(struct linear_* self, Matrix* x);
-Matrix* Linear_w_backward(struct linear_* self, Matrix* x, Matrix* dz);
-Matrix* Linear_b_backward(struct linear_* self, Matrix* dz);
+void Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer);
 typedef struct act_func_{
     Matrix* (*forward)(struct act_func_* self, Matrix* x);
     Matrix* (*backward)(struct act_func_* self, Matrix* x);
