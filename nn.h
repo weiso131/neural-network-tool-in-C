@@ -10,8 +10,8 @@ typedef enum {
     SOFTMAX,
 }NNtype;
 
-typedef struct {
-    nn_node *prev, *next;
+typedef struct nn_node_{
+    struct nn_node_ *prev, *next;
     void *nn_menber;
     NNtype menber_type;
 
@@ -35,18 +35,18 @@ typedef struct {
 
 nn* create_nn();
 
-nn_node Linear_impl(int, int);//n, m
-nn_node ReLU_impl();
-nn_node sigmoid_impl();
-nn_node drop_impl(double);
-nn_node softmax_impl();
+nn_node* Linear_init(int, int);//n, m
+nn_node* ReLU_init();
+nn_node* sigmoid_init();
+nn_node* drop_init(double);
+nn_node* softmax_init();
 
-typedef struct{
+typedef struct linear_{
     Matrix *w;//n x m
     Matrix *b;//n x 1
-    Matrix* (*forward)(Linear*, Matrix*);
-    Matrix* (*w_backward)(Linear*, Matrix*, Matrix*);
-    Matrix* (*b_backward)(Linear*, Matrix*);
+    Matrix* (*forward)(struct linear_*, Matrix*);
+    Matrix* (*w_backward)(struct linear_*, Matrix*, Matrix*);
+    Matrix* (*b_backward)(struct linear_*, Matrix*);
     /*
     forward:
         輸入一個matrix x
@@ -72,14 +72,23 @@ typedef struct{
     */
 }Linear; 
 
-typedef struct{
-    Matrix* (*forward)(ReLU*, Matrix*);
-    Matrix* (*backward)(ReLU*, Matrix*);
-}ReLU;
+typedef struct act_func_{
+    Matrix* (*forward)(struct act_func_*, Matrix*);
+    Matrix* (*backward)(struct act_func_*, Matrix*);
+    double slope;
+}Act_func;
+//統一的活化函數結構，單純方便使用
 
-typedef struct{
-    Matrix* (*forward)(Sigmoid*, Matrix*);
-    Matrix* (*backward)(Sigmoid*, Matrix*);
+typedef struct relu_{
+    Matrix* (*forward)(struct relu_*, Matrix*);
+    Matrix* (*backward)(struct relu_*, Matrix*);
+}ReLU;
+Matrix* relu_forward(ReLU *self, Matrix *x);
+Matrix* relu_backward(ReLU *self, Matrix *x);
+
+typedef struct sigmoid_{
+    Matrix* (*forward)(struct sigmoid_*, Matrix*);
+    Matrix* (*backward)(struct sigmoid_*, Matrix*);
 }Sigmoid;
 
 /*
@@ -91,9 +100,9 @@ typedef struct{
 
 */
 
-typedef struct{
+typedef struct drop_{
     double drop_rate;//(0, 1)
-    Matrix* (*forward)(Drop*, Matrix*);
+    Matrix* (*forward)(struct drop_*, Matrix*);
 }Drop;
 
 /*
@@ -102,8 +111,8 @@ drop:
         輸入matrix上的每個數值都有固定機率drop_rate變成0再輸出
 */
 
-typedef struct{
-    Matrix* (*forward)(Softmax*, Matrix*);
+typedef struct softmax_{
+    Matrix* (*forward)(struct softmax_*, Matrix*);
 }Softmax;
 
 
