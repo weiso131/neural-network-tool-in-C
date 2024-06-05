@@ -41,9 +41,9 @@ nn* create_nn();
 typedef struct linear_{
     Matrix *w;//n x m
     Matrix *b;//n x 1
-    Matrix* (*forward)(struct linear_*, Matrix*);
-    Matrix* (*w_backward)(struct linear_*, Matrix*, Matrix*);
-    Matrix* (*b_backward)(struct linear_*, Matrix*);
+    Matrix* (*forward)(struct linear_* self, Matrix* x);
+    Matrix* (*w_backward)(struct linear_* self, Matrix* x, Matrix* dz);
+    Matrix* (*b_backward)(struct linear_* self, Matrix* dz);
     /*
     forward:
         輸入一個matrix x
@@ -68,8 +68,10 @@ typedef struct linear_{
         b = b - optim_name->optimize(optim_name, db, lr);
     */
 }Linear; 
-nn_node* Linear_init(int, int);//n, m
-
+nn_node* Linear_init(int n, int m, Matrix* specify_w, Matrix* specify_b);//n, m, 指定w, 指定b
+Matrix* Linear_forward(struct linear_* self, Matrix* x);
+Matrix* Linear_w_backward(struct linear_* self, Matrix* x, Matrix* dz);
+Matrix* Linear_b_backward(struct linear_* self, Matrix* dz);
 typedef struct act_func_{
     Matrix* (*forward)(struct act_func_* self, Matrix* x);
     Matrix* (*backward)(struct act_func_* self, Matrix* x);

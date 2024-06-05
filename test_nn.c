@@ -30,4 +30,20 @@ int main(){
     print_matrix(drop->forward(drop, testSoftmaxVec));
 
 
+
+    Matrix *testLinearForwardVec = create(10, 1);
+    testLinearForwardVec->entry = testSoftmaxVec_entry;
+
+    Matrix *w = create(1, 10);
+    w->entry = testSoftmaxVec_entry;
+    Matrix *b = create(1, 1);
+    double b_entry[] = {1.0};
+    b->entry = b_entry;
+
+    nn_node *linear_obj = Linear_init(1, 10, w, b);
+    Linear *linear = (Linear*)linear_obj->nn_menber;
+
+    printf("test linear forward:\n");
+    print_matrix(linear->forward(linear, testLinearForwardVec));
+
 }
