@@ -1,6 +1,5 @@
 #include "act_f_impl.h"
 #include <stdint.h>
-#include <stdio.h>
 
 #define double_int union{double d;int64_t i;}
 
@@ -18,10 +17,3 @@ double relu_backward_impl(double x){
     out.i &= ~(ori.i >> 63);
     return out.d;
 }
-
-// int main(){
-//     double x = 5;
-//     printf("%lf %lf\n", relu_forward_impl(x), relu_backward_impl(x));
-//     x = -10;
-//     printf("%lf %lf\n", relu_forward_impl(x), relu_backward_impl(x));
-// }

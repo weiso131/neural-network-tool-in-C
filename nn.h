@@ -1,6 +1,7 @@
 
 #include "matrix/matrix.h"
 #include "matrix/matrix_ops.h"
+
 #ifndef NN_H
 #define NN_H
 typedef enum {
@@ -35,11 +36,7 @@ typedef struct {
 
 nn* create_nn();
 
-nn_node* Linear_init(int, int);//n, m
-nn_node* ReLU_init();
-nn_node* sigmoid_init();
-nn_node* drop_init(double);
-nn_node* softmax_init();
+
 
 typedef struct linear_{
     Matrix *w;//n x m
@@ -71,10 +68,11 @@ typedef struct linear_{
         b = b - optim_name->optimize(optim_name, db, lr);
     */
 }Linear; 
+nn_node* Linear_init(int, int);//n, m
 
 typedef struct act_func_{
-    Matrix* (*forward)(struct act_func_*, Matrix*);
-    Matrix* (*backward)(struct act_func_*, Matrix*);
+    Matrix* (*forward)(struct act_func_* self, Matrix* x);
+    Matrix* (*backward)(struct act_func_* self, Matrix* x);
     double slope;
 }Act_func;
 //統一的活化函數結構，單純方便使用
@@ -83,6 +81,7 @@ typedef struct relu_{
     Matrix* (*forward)(struct relu_*, Matrix*);
     Matrix* (*backward)(struct relu_*, Matrix*);
 }ReLU;
+nn_node* ReLU_init();
 Matrix* relu_forward(ReLU *self, Matrix *x);
 Matrix* relu_backward(ReLU *self, Matrix *x);
 
@@ -90,6 +89,9 @@ typedef struct sigmoid_{
     Matrix* (*forward)(struct sigmoid_*, Matrix*);
     Matrix* (*backward)(struct sigmoid_*, Matrix*);
 }Sigmoid;
+nn_node* sigmoid_init();
+Matrix* sigmoid_forward(ReLU *self, Matrix *x);
+Matrix* sigmoid_backward(ReLU *self, Matrix *x);
 
 /*
 活化函數
@@ -102,9 +104,10 @@ typedef struct sigmoid_{
 
 typedef struct drop_{
     double drop_rate;//(0, 1)
-    Matrix* (*forward)(struct drop_*, Matrix*);
+    Matrix* (*forward)(struct drop_* self, Matrix* x);
 }Drop;
-
+nn_node* drop_init(double);
+Matrix *drop_forward(Drop* self, Matrix *x);
 /*
 drop:
     forward
@@ -112,9 +115,10 @@ drop:
 */
 
 typedef struct softmax_{
-    Matrix* (*forward)(struct softmax_*, Matrix*);
+    Matrix* (*forward)(struct softmax_* self, Matrix* x);
 }Softmax;
-
+nn_node* softmax_init();
+Matrix* softmax_forward(struct softmax_* self, Matrix* x);
 
 
 

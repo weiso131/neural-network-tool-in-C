@@ -12,4 +12,15 @@ int main(){
     print_matrix(relu->forward(relu, testReLUVec));
     printf("test relu backward\n");
     print_matrix(relu->backward(relu, testReLUVec));
+
+    Matrix *testSoftmaxVec = create(5, 1);
+    double testSoftmaxVec_entry[] = {4, 8, 7, 6, 3};
+    testSoftmaxVec->entry = testSoftmaxVec_entry;
+
+    nn_node* softmax_obj = softmax_init();
+    Softmax *softmax = (Softmax*)softmax_obj->nn_menber;
+
+    printf("test softmax:\n");
+    print_matrix(softmax->forward(softmax, testSoftmaxVec));
+
 }
