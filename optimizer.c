@@ -1,22 +1,22 @@
 #include "optimizer.h"
 #include <math.h>
 
-Matrix* optimize(optim* self, Matrix* dw, double lr, Matrix* Vdw, Matrix* Sdw){
-    Matrix *ans = copy(dw);
+Matrix* adam_optimize(optim* self, Matrix* dw, Matrix* Vdw, Matrix* Sdw){
+    Matrix *output = create(dw->row, dw->col);
     for (int i = 0, row = dw->row, col = dw->col; i < row; ++i){
         for (int j = 0; j < col; ++j){
             Vdw->entry[i * col + j] = self->beta1 * Vdw->entry[i * col + j] + (1 - self->beta1) * dw->entry[i * col + j];
             Sdw->entry[i * col + j] = self->beta2 * Sdw->entry[i * col + j] + (1 - self->beta2) * dw->entry[i * col + j] * dw->entry[i * col + j];
-            ans->entry[i * col + j] -= lr * Vdw->entry[i * col + j] / (sqrt(Sdw->entry[i * col + j]) + self->epsilon);
+            output->entry[i * col + j] = self->init_lr * Vdw->entry[i * col + j] / (sqrt(Sdw->entry[i * col + j]) + self->epsilon);
         }
             
     }
         
-    return ans;
+    return output;
 }
 
 optim* init_Adam(double lr, double beta1, double beta2, double episode){
     optim* adam = malloc(sizeof(optim));
-    *adam = (optim){lr, beta1, beta2, episode, optimize};
+    *adam = (optim){lr, beta1, beta2, episode, adam_optimize};
     return adam;
 }
