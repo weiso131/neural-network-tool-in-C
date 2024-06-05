@@ -108,10 +108,13 @@ typedef struct drop_{
 }Drop;
 nn_node* drop_init(double);
 Matrix *drop_forward(Drop* self, Matrix *x);
+Matrix *drop_backward(Drop* self, Matrix *x);
 /*
 drop:
     forward
         輸入matrix上的每個數值都有固定機率drop_rate變成0再輸出
+    backward
+        https://blog.csdn.net/mch2869253130/article/details/119809360
 */
 
 typedef struct softmax_{
