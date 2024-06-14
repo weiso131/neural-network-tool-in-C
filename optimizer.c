@@ -20,3 +20,12 @@ optim* init_Adam(double lr, double beta1, double beta2, double episode){
     *adam = (optim){lr, beta1, beta2, episode, adam_optimize};
     return adam;
 }
+
+Matrix* SGD_optimize(optim* self, Matrix* dw, Matrix* Vdw, Matrix* Sdw){
+    return scale(dw, self->init_lr);
+}
+optim* init_SGD(double init_lr){
+    optim* SGD = malloc(sizeof(optim));
+    *SGD = (optim){init_lr, 0, 0, 0};
+    return SGD;
+}

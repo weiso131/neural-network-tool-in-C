@@ -1,5 +1,5 @@
 #include "matrix/matrix.h"
-
+#include "matrix/matrix_ops.h"
 #ifndef OPTIMIZER_H
 #define OPTIMIZER_H
 
@@ -24,4 +24,7 @@ optim* init_Adam(double init_lr, double beta1, double beta2, double epsilon);
     要傳入Adam_object給model.train()
 */
 #endif
+
+Matrix* SGD_optimize(optim* self, Matrix* dw, Matrix* Vdw, Matrix* Sdw);
+optim* init_SGD(double init_lr);
 

@@ -1,5 +1,33 @@
 #include "nn.h"
+#include "loss_function.h"
+void test_lenear(){
+    optim* SGD = init_SGD(0.01);
+    loss_f* loss_function = init_MSELoss();
+    Matrix* weight = create(3, 5);
+    Matrix* bias = create(3, 1);
+    fill(weight, 0.5);
+    fill(bias, 0.1);
+    nn_node* linear_obj = Linear_init(3, 5, weight, bias);
+    Linear* linear = (Linear*)linear_obj->nn_menber;
 
+    //data
+    Matrix* input = create(5, 1);
+    Matrix* target = create(3, 1);
+    double input_entry[] = {0.1, 0.5, 0.6, 0.89, 0.34};
+    double target_entry[] = {1.0, 0.0, 0.0};
+    input->entry = input_entry;
+    target->entry = target_entry;
+
+    Matrix* output = linear->forward(linear, input);
+    
+    printf("\ntest linear:\ntest forward:\n"); 
+    print_matrix(output);
+
+    Matrix* dz = loss_function->get_gredient(output, target);
+    double loss = loss_function->get_loss_item(output, target);
+    printf("loss:%lf\nloss gredient:\n", loss);
+    print_matrix(dz);
+}
 
 int main(){
     nn_node* relu_obj = ReLU_init();
@@ -10,6 +38,9 @@ int main(){
     testReLUVec->entry = testReLUVec_entry;
     printf("test relu forward\n");
     print_matrix(relu->forward(relu, testReLUVec));
+
+    printf("test relu backward\n");
+    print_matrix(relu->backward(relu, testReLUVec, testReLUVec, NULL));
 
     Matrix *testSoftmaxVec = create(10, 1);
     double testSoftmaxVec_entry[] = {4, 8, 7, 6, 3, 4, 8, 7, 6, 3};
@@ -27,26 +58,9 @@ int main(){
     printf("test drop forward:\n");
     print_matrix(drop->forward(drop, testSoftmaxVec));
 
+    test_lenear();
 
-
-    Matrix *testLinearForwardVec = create(10, 1);
-    testLinearForwardVec->entry = testSoftmaxVec_entry;
-
-    Matrix *w = create(1, 10);
-    w->entry = testSoftmaxVec_entry;
-    Matrix *b = create(1, 1);
-    double b_entry[] = {1.0};
-    b->entry = b_entry;
-
-    nn_node *linear_obj = Linear_init(1, 10, w, b);
-    Linear *linear = (Linear*)linear_obj->nn_menber;
-
-    printf("test linear forward:\n");
-    print_matrix(linear->forward(linear, testLinearForwardVec));
-
-
-    printf("test relu backward\n");
-    print_matrix(relu->backward(relu, testReLUVec, testReLUVec, NULL));
+    
     
 
 }
