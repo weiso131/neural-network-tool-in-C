@@ -129,11 +129,6 @@ drop:
         
 */
 
-typedef struct softmax_{
-    Matrix* (*forward)(struct softmax_* self, Matrix* x);
-}Softmax;
-nn_node* softmax_init();
-Matrix* softmax_forward(struct softmax_* self, Matrix* x);
 
 
 

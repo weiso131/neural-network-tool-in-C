@@ -65,14 +65,8 @@ Matrix* forward(Model *self, Matrix *data, outputNode **outputLinklist){
         else if(member_type == DROP){
             Forward_type_transfor(Drop, SerialNode->nn_menber, new_result, result);
         }
-        else {
-            Forward_type_transfor(Softmax, SerialNode->nn_menber, new_result, result);
-        }
-        
         SerialNode = SerialNode->next;
         if (outputLinklist != NULL && member_type != SOFTMAX){//softmax會跳過
-            printf("test: %d, %d\n", new_result->row, new_result->col);
-            print_matrix(new_result);
             add_outputNode(outputLinklist, outputNode_create(new_result));
         }
             

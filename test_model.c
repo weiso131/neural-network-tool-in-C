@@ -5,8 +5,6 @@ int main(){
     myModel->add(myModel, Linear_init(16, 5, NULL, NULL)); 
     myModel->add(myModel, ReLU_init());
     myModel->add(myModel, Linear_init(3, 16, NULL, NULL));   
-    //myModel->add(myModel, ReLU_init());
-    myModel->add(myModel, softmax_init());
     printf("Forward:\n");
     nn_node *start = myModel->begin;
     while (start != NULL){
@@ -44,12 +42,12 @@ int main(){
     target->entry = target_entry;
 
     
-    myModel->train(myModel, init_Adam(0.01, 0.9, 0.999, 1e-8), 300, NULL, NULL, init_CrossEntropy());
+    myModel->train(myModel, init_Adam(0.01, 0.9, 0.999, 1e-8), 1000, NULL, NULL, init_CrossEntropy());
 
 
     Matrix *predict = myModel->predict(myModel, input);
-    print_matrix(predict);
+    print_matrix(softmax(predict));
 }
 
 
-//gcc test_nn.c linear.c softmax.c drop.c act_f/act_f.c act_f/act_f_impl.c matrix/matrix.c matrix/matrix_ops.c loss_function.c optimizer.c -o test_nn -lm
+//gcc test_nn.c linear.c drop.c act_f/act_f.c act_f/act_f_impl.c matrix/matrix.c matrix/matrix_ops.c loss_function.c optimizer.c -o test_nn -lm
