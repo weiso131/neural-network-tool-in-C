@@ -6,13 +6,6 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-typedef struct outputNode_{
-    Matrix* output;
-    struct outputNode_* prev;
-}outputNode;
-
-
-
 typedef struct model_{
     nn_node *begin, *end;
     void (*add)(struct model_ *self, nn_node*);
@@ -23,7 +16,7 @@ typedef struct model_{
 //模型本身 紀錄一串nn_node的頭跟尾 以及
 
 
-void add_impl(Model *self, nn_node* newNode);
+void model_add_impl(Model *self, nn_node* newNode);
 /*
 加入新的模型元素
     使用者傳入newNode的指標，把該指標接到linklist上面

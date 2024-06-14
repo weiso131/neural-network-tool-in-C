@@ -18,7 +18,7 @@ nn_node* softmax_init(){
     *softmax = (Softmax){softmax_forward};
 
     nn_node* softmax_node = malloc(sizeof(nn_node));
-    *softmax_node = (nn_node){NULL, NULL, softmax, ACTIVATE};
+    *softmax_node = (nn_node){NULL, NULL, softmax, SOFTMAX};
 
     return softmax_node;
 }
