@@ -5,11 +5,19 @@
 
 #ifndef MODEL_H
 #define MODEL_H
-typedef struct {
+
+typedef struct outputNode_{
+    Matrix* output;
+    struct outputNode_* prev;
+}outputNode;
+
+
+
+typedef struct model_{
     nn_node *begin, *end;
-    void (*add)(nn_node*);
-    Matrix* (*predict)(Matrix*);
-    void (*train)(optim*, int, dataloader*, dataloader*, loss_f*);//optimizor, epoch, train_dataloader, valid_dataloader, loss_function
+    void (*add)(struct model_ *self, nn_node*);
+    Matrix* (*predict)(struct model_ *self, Matrix*);
+    void (*train)(struct model_ *self, optim* optimizer, int epoch, dataloader* train_data, dataloader* valid_data, loss_f* loss_function);//optimizor, epoch, train_dataloader, valid_dataloader, loss_function
     
 }Model;
 //模型本身 紀錄一串nn_node的頭跟尾 以及
