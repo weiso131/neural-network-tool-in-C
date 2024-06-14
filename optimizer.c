@@ -1,5 +1,6 @@
 #include "optimizer.h"
 #include <math.h>
+#include <stdio.h>
 
 Matrix* adam_optimize(optim* self, Matrix* dw, Matrix* Vdw, Matrix* Sdw){
     Matrix *output = create(dw->row, dw->col);
@@ -26,6 +27,6 @@ Matrix* SGD_optimize(optim* self, Matrix* dw, Matrix* Vdw, Matrix* Sdw){
 }
 optim* init_SGD(double init_lr){
     optim* SGD = malloc(sizeof(optim));
-    *SGD = (optim){init_lr, 0, 0, 0};
+    *SGD = (optim){init_lr, 0, 0, 0, SGD_optimize};
     return SGD;
 }

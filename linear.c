@@ -36,12 +36,16 @@ Matrix* Linear_forward(struct linear_* self, Matrix* x){
 Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer){
     //Update
     Matrix *xT = transpose(x);
+    
     Matrix *dw = mul(dz, xT);
+    
+    
     free_matrix(xT);
 
     Matrix *lr_dW = optimizer->optimize(optimizer, dw, self->vdw, self->sdw);
     Matrix *lr_db = optimizer->optimize(optimizer, dz, self->vdb, self->sdb);
     free_matrix(dw);
+    
 
     Matrix *ori_w = self->w;
     Matrix *ori_b = self->b;

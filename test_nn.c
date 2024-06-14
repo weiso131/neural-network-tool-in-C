@@ -1,7 +1,7 @@
 #include "nn.h"
 #include "loss_function.h"
 void test_lenear(){
-    optim* SGD = init_SGD(0.01);
+    optim* optimizer = init_Adam(0.01, 0.9, 0.999, 1e-8);
     loss_f* loss_function = init_MSELoss();
     Matrix* weight = create(3, 5);
     Matrix* bias = create(3, 1);
@@ -20,13 +20,37 @@ void test_lenear(){
 
     Matrix* output = linear->forward(linear, input);
     
-    printf("\ntest linear:\ntest forward:\n"); 
+    printf("\nTest linear:\ntest forward:\n"); 
     print_matrix(output);
 
     Matrix* dz = loss_function->get_gredient(output, target);
     double loss = loss_function->get_loss_item(output, target);
     printf("loss:%lf\nloss gredient:\n", loss);
     print_matrix(dz);
+
+
+    linear->backward(linear, dz, input, optimizer);
+
+    printf("weight backward result:\n");
+    print_matrix(linear->w);
+    printf("bias backward result:\n");
+    print_matrix(linear->b);
+
+
+    for (int i = 0;i < 1000;i++){
+        output = linear->forward(linear, input);
+        if ((i + 1) % 100 == 0){
+            loss = loss_function->get_loss_item(output, target);
+            printf("epoch:%d, loss%lf\n", i, loss);
+            print_matrix(output);
+        }
+            
+        dz = loss_function->get_gredient(output, target);
+        Matrix* forUpdate = linear->backward(linear, dz, input, optimizer);
+        free_matrix(output);
+        free_matrix(dz);
+        free_matrix(forUpdate);
+    }
 }
 
 int main(){
