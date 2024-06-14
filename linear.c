@@ -33,7 +33,7 @@ Matrix* Linear_forward(struct linear_* self, Matrix* x){
     free_matrix(mul_result);
     return result;
 }
-void Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer){
+Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer){
     Matrix *xT = transpose(x);
     Matrix *dw = mul(dz, xT);
     free_matrix(xT);

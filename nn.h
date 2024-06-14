@@ -46,7 +46,7 @@ typedef struct linear_{
     Matrix *vdb;//n x 1
     Matrix *sdb;//n x 1
     Matrix* (*forward)(struct linear_* self, Matrix* x);
-    void (*backward)(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer);
+    Matrix* (*backward)(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer);
     /*
     forward:
         輸入一個matrix x
@@ -68,7 +68,7 @@ Matrix* Linear_forward(struct linear_* self, Matrix* x);
 Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer);
 typedef struct act_func_{
     Matrix* (*forward)(struct act_func_* self, Matrix* x);
-    Matrix* (*backward)(struct act_func_* self, Matrix* x);
+    Matrix* (*backward)(struct act_func_* self, Matrix* dz, Matrix* x, optim* optimizer);
     double slope;
 }Act_func;
 /*
@@ -88,16 +88,16 @@ typedef struct act_func_{
 //
 
 typedef struct relu_{
-    Matrix* (*forward)(struct relu_*, Matrix*);
-    Matrix* (*backward)(struct relu_*, Matrix*);
+    Matrix* (*forward)(struct relu_* self, Matrix* x);
+    Matrix* (*backward)(struct relu_* self, Matrix* dz, Matrix* x, optim* optimizer);
 }ReLU;
 nn_node* ReLU_init();
 Matrix* relu_forward(ReLU *self, Matrix *x);
 Matrix* relu_backward(ReLU *self, Matrix* dz, Matrix* x, optim* optimizer);
 
 typedef struct sigmoid_{
-    Matrix* (*forward)(struct sigmoid_*, Matrix*);
-    Matrix* (*backward)(struct sigmoid_*, Matrix*);
+    Matrix* (*forward)(struct sigmoid_* self, Matrix* x);
+    Matrix* (*backward)(struct sigmoid_* self, Matrix* dz, Matrix* x, optim* optimizer);
 }Sigmoid;
 nn_node* sigmoid_init();
 Matrix* sigmoid_forward(ReLU *self, Matrix *x);
@@ -109,6 +109,7 @@ Matrix* sigmoid_backward(ReLU *self, Matrix* dz, Matrix* x, optim* optimizer);
 typedef struct drop_{
     double drop_rate;//(0, 1)
     Matrix* (*forward)(struct drop_* self, Matrix* x);
+    Matrix* (*backward)(struct drop_* self, Matrix* dz, Matrix* x, optim* optimizer);
 }Drop;
 nn_node* drop_init(double);
 Matrix *drop_forward(Drop* self, Matrix *x);

@@ -44,5 +44,10 @@ int main(){
     printf("test linear forward:\n");
     print_matrix(linear->forward(linear, testLinearForwardVec));
 
+
+    printf("test relu backward\n");
+    print_matrix(relu->backward(relu, testReLUVec, testReLUVec, NULL));
+    
+
 }
 //gcc test_nn.c linear.c softmax.c drop.c act_f/act_f.c act_f/act_f_impl.c matrix/matrix.c matrix/matrix_ops.c -o test_nn -lm
