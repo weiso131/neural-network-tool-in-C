@@ -34,6 +34,7 @@ Matrix* Linear_forward(struct linear_* self, Matrix* x){
     return result;
 }
 Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer){
+    //Update
     Matrix *xT = transpose(x);
     Matrix *dw = mul(dz, xT);
     free_matrix(xT);
@@ -49,6 +50,14 @@ Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* opti
     
     free_matrix(ori_w);
     free_matrix(ori_b);
+
+    //calculate output
+    Matrix* wT = transpose(self->w);
+    Matrix* output = mul(wT, dz);
+    free_matrix(wT);
+
+    return output;
+
 }   
 
 /*
