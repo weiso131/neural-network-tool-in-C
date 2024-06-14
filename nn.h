@@ -54,25 +54,38 @@ typedef struct linear_{
 
     backward:
         輸入dz, x, optimzizer
-        dz是dz
+        dz是下一層反向傳播回來的東西
         x是上一層的輸出
         optimizer是optimizer
 
         丟進去更新w, b
-        就...反向傳播
-        rya
+        然後計算W^TdZ並回傳
 
     */
 }Linear; 
 nn_node* Linear_init(int n, int m, Matrix* specify_w, Matrix* specify_b);//n, m, 指定w, 指定b
 Matrix* Linear_forward(struct linear_* self, Matrix* x);
-void Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer);
+Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer);
 typedef struct act_func_{
     Matrix* (*forward)(struct act_func_* self, Matrix* x);
     Matrix* (*backward)(struct act_func_* self, Matrix* x);
     double slope;
 }Act_func;
-//統一的活化函數結構，單純方便使用
+/*
+    統一的活化函數結構，單純方便使用
+    forward:
+        輸入一個matrix x
+        計算g(x)並輸出該結果
+    backward:
+        輸入dz, x, optimzizer
+        dz是下一層反向傳播回來的東西
+        x是上一層的輸出
+        optimizer是NULL(反正用不到，單純統一backward格式)
+        
+        計算dZ並回傳
+*/
+
+//
 
 typedef struct relu_{
     Matrix* (*forward)(struct relu_*, Matrix*);
@@ -80,7 +93,7 @@ typedef struct relu_{
 }ReLU;
 nn_node* ReLU_init();
 Matrix* relu_forward(ReLU *self, Matrix *x);
-Matrix* relu_backward(ReLU *self, Matrix *x);
+Matrix* relu_backward(ReLU *self, Matrix* dz, Matrix* x, optim* optimizer);
 
 typedef struct sigmoid_{
     Matrix* (*forward)(struct sigmoid_*, Matrix*);
@@ -88,16 +101,10 @@ typedef struct sigmoid_{
 }Sigmoid;
 nn_node* sigmoid_init();
 Matrix* sigmoid_forward(ReLU *self, Matrix *x);
-Matrix* sigmoid_backward(ReLU *self, Matrix *x);
+Matrix* sigmoid_backward(ReLU *self, Matrix* dz, Matrix* x, optim* optimizer);
 
-/*
-活化函數
-    forward
-        實作把輸入帶入對應的活化函數再輸出
-    backward
-        實作把輸入帶入對應的活化函數的導數再輸出
 
-*/
+
 
 typedef struct drop_{
     double drop_rate;//(0, 1)
@@ -105,13 +112,20 @@ typedef struct drop_{
 }Drop;
 nn_node* drop_init(double);
 Matrix *drop_forward(Drop* self, Matrix *x);
-Matrix *drop_backward(Drop* self, Matrix *x);
+Matrix *drop_backward(Drop* self, Matrix* dz, Matrix* x, optim* optimizer);
 /*
 drop:
     forward
         輸入matrix上的每個數值都有固定機率drop_rate變成0再輸出
     backward
         https://blog.csdn.net/mch2869253130/article/details/119809360
+        輸入dz, x, optimzizer
+        dz是下一層反向傳播回來的東西
+        x是上一層的輸出
+        optimizer是NULL(反正用不到，單純統一backward格式)
+        
+        計算dZ並回傳
+        
 */
 
 typedef struct softmax_{

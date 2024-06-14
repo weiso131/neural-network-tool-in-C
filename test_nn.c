@@ -10,8 +10,6 @@ int main(){
     testReLUVec->entry = testReLUVec_entry;
     printf("test relu forward\n");
     print_matrix(relu->forward(relu, testReLUVec));
-    printf("test relu backward\n");
-    print_matrix(relu->backward(relu, testReLUVec));
 
     Matrix *testSoftmaxVec = create(10, 1);
     double testSoftmaxVec_entry[] = {4, 8, 7, 6, 3, 4, 8, 7, 6, 3};
