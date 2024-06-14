@@ -87,12 +87,12 @@ Matrix *apply(Matrix *m1, act_f f){
 }
 
 Matrix *transpose(Matrix *m1){
-    Matrix* result = create(m1->row, m1->col);
+    Matrix* result = create(m1->col, m1->row);
     #pragma omp parallel for schedule(static)
 
-    for (int i = 0;i < m1->row;++i)
-        for (int j = 0;j < m1->col;++j)
-            *(result->entry + i * m1->col + j) = *(m1->entry + j * m1->row + i);
+    for (int i = 0;i < m1->col;++i)
+        for (int j = 0;j < m1->row;++j)
+            *(result->entry + i * m1->row + j) = *(m1->entry + j * m1->col + i);
     return result;
 }
 
