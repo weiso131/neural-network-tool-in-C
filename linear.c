@@ -33,19 +33,30 @@ Matrix* Linear_forward(struct linear_* self, Matrix* x){
     free_matrix(mul_result);
     return result;
 }
+
+Matrix *db_calculate(Matrix *dz){
+    Matrix *db = create(dz->row, 1);
+    for (int i = 0; i < dz->row;i++){
+        for (int j = 0;j < dz->col;j++)
+            db->entry[i] += dz->entry[i * dz->col + j];
+        db->entry[i] /= dz->col;
+    }
+    return db;
+        
+}
+
 Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer){
     //Update
     Matrix *xT = transpose(x);
-    
     Matrix *dw = mul(dz, xT);
-    
-    
     free_matrix(xT);
 
+    Matrix *db = db_calculate(dz);
+
     Matrix *lr_dW = optimizer->optimize(optimizer, dw, self->vdw, self->sdw);
-    Matrix *lr_db = optimizer->optimize(optimizer, dz, self->vdb, self->sdb);
+    Matrix *lr_db = optimizer->optimize(optimizer, db, self->vdb, self->sdb);
     free_matrix(dw);
-    
+    free_matrix(db);
 
     Matrix *ori_w = self->w;
     Matrix *ori_b = self->b;
