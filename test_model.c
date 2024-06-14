@@ -34,20 +34,33 @@ int main(){
 
         end = end->prev;
     }
-    Matrix* input = create(5, 1);
-    Matrix* target = create(3, 1);
-    double input_entry[] = {0.1, 0.5, 0.6, 0.89, 0.34};
-    double target_entry[] = {1.0, 0.0, 0.0};
-    input->entry = input_entry;
-    target->entry = target_entry;
+    Matrix **data = (Matrix**)malloc(sizeof(Matrix*) * 20);
+    Matrix **label = (Matrix**)malloc(sizeof(Matrix*) * 20);
 
-    
-    myModel->train(myModel, init_Adam(0.01, 0.9, 0.999, 1e-8), 1000, NULL, NULL, init_CrossEntropy());
+    for (int i = 0;i < 20;i++){
+        double input_entry[] = {0.1, 0.5, 0.6, 0.89, 0.34};
+        double target_entry[] = {1.0, 0.0, 0.0};
+        
+        data[i] = create(5, 1);
+        label[i] = create(3, 1);
+        
+        data[i]->entry = input_entry;
+        label[i]->entry = target_entry;
+    }
+
+    Matrix* input = create(5, 1);
+    double input_entry[] = {0.1, 0.5, 0.6, 0.89, 0.34};
+    input->entry = input_entry;
+
+    dataloader *trainLoader = init_dataloader(data, label, 4, 20, 0);
+    dataloader *validLoader = init_dataloader(data, label, 4, 14, 0);
+
+    myModel->train(myModel, init_Adam(0.01, 0.9, 0.999, 1e-8), 100, trainLoader, validLoader, init_MSELoss());
 
 
     Matrix *predict = myModel->predict(myModel, input);
-    print_matrix(softmax(predict));
+    print_matrix(predict);
 }
 
 
-//gcc test_nn.c linear.c drop.c act_f/act_f.c act_f/act_f_impl.c matrix/matrix.c matrix/matrix_ops.c loss_function.c optimizer.c -o test_nn -lm
+//gcc test_model.c model.c linear.c drop.c act_f/act_f.c act_f/act_f_impl.c matrix/matrix.c matrix/matrix_ops.c loss_function.c optimizer.c dataloader.c -o test_model -lm

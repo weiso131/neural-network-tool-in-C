@@ -66,12 +66,8 @@ Matrix* forward(Model *self, Matrix *data, outputNode **outputLinklist){
             Forward_type_transfor(Drop, SerialNode->nn_menber, new_result, result);
         }
         SerialNode = SerialNode->next;
-        if (outputLinklist != NULL && member_type != SOFTMAX){//softmax會跳過
+        if (outputLinklist != NULL)
             add_outputNode(outputLinklist, outputNode_create(new_result));
-        }
-            
-        else if (result != data)
-            free_matrix(result);
         result = new_result;
         
             
@@ -86,50 +82,58 @@ Matrix* predict_impl(Model *self, Matrix *data){
 void train_impl(Model *self, optim* optimizer, int epoch, dataloader* train_data, dataloader* valid_data, loss_f* loss_function){
     
     
-    Matrix* input = create(5, 1);
-    Matrix* target = create(3, 1);
-    double input_entry[] = {0.1, 0.5, 0.6, 0.89, 0.34};
-    double target_entry[] = {1.0, 0.0, 0.0};
-    input->entry = input_entry;
-    target->entry = target_entry;
-    
     for (int t = 0;t < epoch;t++){
-        outputNode *outputLinklist = outputNode_create(NULL);
-        Matrix *predict = forward(self, input, &outputLinklist);
-        Matrix *dz = loss_function->get_gredient(outputLinklist->output, target);//反向傳播會跳過softmax，直接使用前一層的輸出
-        // printf("test dz\n");
-        double loss = loss_function->get_loss_item(predict, target);
-        pop_outputNode(&outputLinklist);
+        double train_loss = 0, valid_loss = 0;
+        int trainBatchLength = train_data->data_length / train_data->batch_size;
+        int validBatchLength = valid_data->data_length / valid_data->batch_size;
+        for (int batchNum = 0;batchNum < trainBatchLength;batchNum++){
+            outputNode *outputLinklist = outputNode_create(NULL);
+            Matrix* data = train_data->batches[batchNum]->data;
+            Matrix* label = train_data->batches[batchNum]->label;
 
-        nn_node *SerialNode = self->end;
-        
-        while (SerialNode != NULL){
-            if (SerialNode->menber_type == SOFTMAX){
-                SerialNode = SerialNode->prev;
-                continue;
-            }
-
-            //決定上一層輸出是誰
-            Matrix *last_layer_output = outputLinklist->output;
-            if (outputLinklist->output == NULL)
-                last_layer_output = input;
-            
-            if (SerialNode->menber_type == LINEAR){
-                Backward_type_transfor(Linear, SerialNode->nn_menber, dz, last_layer_output, optimizer);
-            }
-            else if(SerialNode->menber_type == ACTIVATE){
-                Backward_type_transfor(Act_func, SerialNode->nn_menber, dz, last_layer_output, optimizer);
-            }
-            else if(SerialNode->menber_type == DROP){
-                Backward_type_transfor(Drop, SerialNode->nn_menber, dz, last_layer_output, optimizer);
-            }
-
+            Matrix *predict = forward(self, data, &outputLinklist);
+            Matrix *dz = loss_function->get_gredient(predict, label);
+            train_loss += loss_function->get_loss_item(predict, label);
             pop_outputNode(&outputLinklist);
-            SerialNode = SerialNode->prev;
+            nn_node *SerialNode = self->end;
+            
+            while (SerialNode != NULL){
+                //決定上一層輸出是誰
+                Matrix *last_layer_output = outputLinklist->output;
+                if (outputLinklist->output == NULL)
+                    last_layer_output = data;
+                if (SerialNode->menber_type == LINEAR){
+                    Backward_type_transfor(Linear, SerialNode->nn_menber, dz, last_layer_output, optimizer);
+                }
+                else if(SerialNode->menber_type == ACTIVATE){
+                    Backward_type_transfor(Act_func, SerialNode->nn_menber, dz, last_layer_output, optimizer);
+                }
+                else if(SerialNode->menber_type == DROP){
+                    Backward_type_transfor(Drop, SerialNode->nn_menber, dz, last_layer_output, optimizer);
+                }
+
+                pop_outputNode(&outputLinklist);
+                SerialNode = SerialNode->prev;
+            }
+
+            free_matrix(dz);
+            free_matrix(predict);
+        }
+        for (int batchNum = 0;batchNum < validBatchLength;batchNum++){
+            Matrix* data = valid_data->batches[batchNum]->data;
+            Matrix* label = valid_data->batches[batchNum]->label;
+            Matrix *predict = forward(self, data, NULL);
+            valid_loss += loss_function->get_loss_item(predict, label);
+            free_matrix(predict);
         }
 
-        free_matrix(dz);
-        free_matrix(predict);
+        if ((t + 1) % (epoch / 10) == 0){
+            printf("epoch: %d, train loss: %lf, valid loss: %lf\n", t + 1, \
+            train_loss / trainBatchLength, valid_loss / validBatchLength);
+        }
+
+
+        
     }
 
     

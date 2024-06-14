@@ -7,7 +7,7 @@ int main(){
            **label = (Matrix **)malloc(sizeof(Matrix *) * data_length);
     for (int i = 0; i < data_length; i++){
         data[i] = (Matrix*)create(4, 1);
-        label[i] = (Matrix*)create(4, 1);
+        label[i] = (Matrix*)create(2, 1);
         fill(data[i], i);
         fill(label[i], i);
     }
@@ -18,6 +18,8 @@ int main(){
         Matrix* y = loader->batches[i]->label;
         printf("data:\n");
         print_matrix(x);
+        printf("label:\n");
+        print_matrix(y);
 
     }
 }

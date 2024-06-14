@@ -11,10 +11,10 @@ void test_lenear(){
     Linear* linear = (Linear*)linear_obj->nn_menber;
 
     //data
-    Matrix* input = create(5, 1);
-    Matrix* target = create(3, 1);
-    double input_entry[] = {0.1, 0.5, 0.6, 0.89, 0.34};
-    double target_entry[] = {1.0, 0.0, 0.0};
+    Matrix* input = create(5, 2);
+    Matrix* target = create(3, 2);
+    double input_entry[] = {0.1, 0.5, 0.6, 0.89, 0.34, 0.1, 0.5, 0.6, 0.89, 0.34};
+    double target_entry[] = {1.0, 0.0, 0.0, 1.0, 0.0, 0.0};
     input->entry = input_entry;
     target->entry = target_entry;
 
@@ -84,4 +84,4 @@ int main(){
     
 
 }
-//gcc test_nn.c linear.c softmax.c drop.c act_f/act_f.c act_f/act_f_impl.c matrix/matrix.c matrix/matrix_ops.c loss_function.c optimizer.c -o test_nn -lm
+//gcc test_nn.c linear.c drop.c act_f/act_f.c act_f/act_f_impl.c matrix/matrix.c matrix/matrix_ops.c loss_function.c optimizer.c -o test_nn -lm
