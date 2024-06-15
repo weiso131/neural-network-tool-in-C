@@ -1,7 +1,8 @@
+#include "src/matrix/matrix.h"
 #include <stdio.h>
-#include <src/matrix/matrix.h>
 
-#define ERROR(format, ...) (fprintf(strerr, format, __VA_ARGS__);return -1;)
+
+#define ERROR(format, ...) {fprintf(stderr, format, __VA_ARGS__);return NULL;}
 
 Matrix **create_vectors(int nums, int each_len){
     Matrix **vectors = malloc(nums * sizeof(Matrix*));
@@ -10,20 +11,23 @@ Matrix **create_vectors(int nums, int each_len){
     return vectors;
 }
 
-Matrix *read_vectors(char* file){
+Matrix **read_vectors(char* file){
     int n, m;
-    FILE *fp = open(file, "r");
-    if (!fp)ERROR("%s doesn't exist.", file);
-    if (fscanf(fp, "%d%d", n, m) < 2)ERROR("%s can't read the size of matrix.", file);
+    FILE *fp = fopen(file, "r");
+    if (!fp)ERROR("%s doesn't exist.\n", file);
+    if (fscanf(fp, "%d%d", &n, &m) < 2)ERROR("%s can't read the size of matrix.\n", file);
+    printf("%d, %d", n, m);
     Matrix **vectors = create_vectors(n, m);
-    for (i = 0; i < n; ++i)
-        for (j = 0; j < m; ++j)
-            if (!fscanf(fp, "%lf", vectors[i]->entry + j))ERROR("unknown error while reading matrix in %s", file);
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j)
+            if (!fscanf(fp, "%lf", vectors[i]->entry + j))ERROR("unknown error while reading matrix in %s\n", file);
     return vectors;
 }
 
 int main(){
     Matrix **data = read_vectors("data.json");
     Matrix **target = read_vectors("target.json");
+
+    print_matrix(data[0]);
     return 0;
 }
