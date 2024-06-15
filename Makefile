@@ -2,10 +2,10 @@
 CC = gcc
 
 # 定義編譯選項
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -fopenmp
 
 # 定義目標文件名
-TARGET = test_model
+TARGET = demo
 
 # 定義源文件資料夾
 SRC_DIR = src
@@ -14,7 +14,7 @@ SRC_DIR = src
 SOURCES = $(shell find $(SRC_DIR) -name "*.c")
 
 # 定義主文件
-MAIN = test_model.c
+MAIN = demo.c
 
 # 定義對象文件列表，包含main.c編譯的對象文件
 OBJECTS = $(MAIN:.c=.o) $(SOURCES:.c=.o)

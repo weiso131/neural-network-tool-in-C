@@ -10,12 +10,15 @@ Matrix* CrossEntropy_get_gredient(Matrix* predict, Matrix* label){
 }
 double CrossEntropy_get_loss_item(Matrix* predict, Matrix* label){
     Matrix *probability = softmax(predict);
-    double ans = 0;
+    double loss = 0;
     for (int i = 0, row = probability->row, col = probability->col; i < row; ++i)
-        for (int j = 0; j < col; ++j)
-            ans -= label->entry[i * col + j] * log(probability->entry[i * col + j]);
+        for (int j = 0; j < col; ++j){
+            
+            loss -= label->entry[i * col + j] * log(probability->entry[i * col + j] + 1e-7);
+        }
+            
     free_matrix(probability);
-    return ans;
+    return loss;
 }
 loss_f* init_CrossEntropy(){
     loss_f* criterion = malloc(sizeof(loss_f));
