@@ -1,6 +1,7 @@
 .history
 .vscode
 *.exe
+*.o
 test_nn
 test_optim
 test_model

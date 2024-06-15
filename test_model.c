@@ -1,4 +1,4 @@
-#include "model.h"
+#include "src/model.h"
 
 int main(){
     Model *myModel = create_model();

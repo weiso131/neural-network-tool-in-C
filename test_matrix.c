@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<omp.h>
-#include "matrix.h"
-#include "matrix_ops.h"
+#include "src/matrix/matrix.h"
+#include "src/matrix/matrix_ops.h"
 
 double test_apply(double x){
     return 0;

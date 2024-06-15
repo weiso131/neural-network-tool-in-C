@@ -1,4 +1,4 @@
-#include "dataloader.h"
+#include "src/dataloader.h"
 
 int main(){
     int data_length = 25, batch_size = 4;

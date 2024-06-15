@@ -1,5 +1,5 @@
-#include "nn.h"
-#include "loss_function.h"
+#include "src/nn.h"
+#include "src/loss_function.h"
 void test_lenear(){
     optim* optimizer = init_Adam(0.01, 0.9, 0.999, 1e-8);
     loss_f* loss_function = init_MSELoss();
