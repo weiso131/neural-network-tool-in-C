@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 
-Matrix* adam_optimize(optim* self, Matrix* dw, Matrix* Vdw, Matrix* Sdw){
+Matrix* adam_optimize(optim *self, Matrix *dw, Matrix *Vdw, Matrix *Sdw){
     Matrix *output = init_matrix(dw->row, dw->col);
     for (int i = 0, row = dw->row, col = dw->col; i < row; ++i){
         for (int j = 0; j < col; ++j){
@@ -17,16 +17,16 @@ Matrix* adam_optimize(optim* self, Matrix* dw, Matrix* Vdw, Matrix* Sdw){
 }
 
 optim* init_Adam(double lr, double beta1, double beta2, double episode){
-    optim* adam = malloc(sizeof(optim));
+    optim *adam = malloc(sizeof(optim));
     *adam = (optim){lr, beta1, beta2, episode, adam_optimize};
     return adam;
 }
 
-Matrix* SGD_optimize(optim* self, Matrix* dw, Matrix* Vdw, Matrix* Sdw){
+Matrix* SGD_optimize(optim *self, Matrix *dw, Matrix *Vdw, Matrix *Sdw){
     return scale(dw, self->init_lr);
 }
 optim* init_SGD(double init_lr){
-    optim* SGD = malloc(sizeof(optim));
+    optim *SGD = malloc(sizeof(optim));
     *SGD = (optim){init_lr, 0, 0, 0, SGD_optimize};
     return SGD;
 }

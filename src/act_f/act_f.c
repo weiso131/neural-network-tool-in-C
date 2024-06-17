@@ -13,7 +13,7 @@ nn_node* init_ReLU(){
 Matrix* relu_forward(ReLU *self, Matrix *x){
     return apply(x, relu_forward_impl);
 }
-Matrix* relu_backward(ReLU *self, Matrix* dz, Matrix* x, optim* optimizer){
+Matrix* relu_backward(ReLU *self, Matrix *dz, Matrix *x, optim *optimizer){
     
     Matrix* act_PD = apply(x, relu_backward_impl);//activate function partial derivative
     Matrix* output = dot(dz, act_PD);

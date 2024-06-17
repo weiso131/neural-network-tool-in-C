@@ -5,10 +5,10 @@
 
 typedef struct optim_{
     double init_lr, beta1, beta2, epsilon;
-    Matrix* (*optimize)(struct optim_ *self, Matrix* dw, Matrix* Vdw, Matrix* Sdw);//self, dw, lr, Vdw, Sdw
+    Matrix* (*optimize)(struct optim_ *self, Matrix *dw, Matrix *Vdw, Matrix *Sdw);//self, dw, lr, Vdw, Sdw
 
 }optim;
-Matrix* adam_optimize(optim* self, Matrix* dw, Matrix* Vdw, Matrix* Sdw);
+Matrix* adam_optimize(optim *self, Matrix *dw, Matrix *Vdw, Matrix *Sdw);
 optim* init_Adam(double init_lr, double beta1, double beta2, double epsilon);
 /*
 公式參考:https://hackmd.io/IXesQRuzSQisMGYL4t1eRQ，crtl+f找優化器
@@ -25,6 +25,6 @@ optim* init_Adam(double init_lr, double beta1, double beta2, double epsilon);
 */
 #endif
 
-Matrix* SGD_optimize(optim* self, Matrix* dw, Matrix* Vdw, Matrix* Sdw);
+Matrix* SGD_optimize(optim *self, Matrix *dw, Matrix *Vdw, Matrix *Sdw);
 optim* init_SGD(double init_lr);
 

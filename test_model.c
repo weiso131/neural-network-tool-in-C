@@ -1,7 +1,7 @@
 #include "src/model.h"
 
 int main(){
-    Model *myModel = create_model();
+    Model *myModel = init_model();
     myModel->add(myModel, init_Linear(16, 5, NULL, NULL)); 
     myModel->add(myModel, init_ReLU());
     myModel->add(myModel, init_Linear(3, 16, NULL, NULL));   

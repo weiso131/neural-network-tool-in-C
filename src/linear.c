@@ -1,6 +1,6 @@
 #include "nn.h"
 
-nn_node* init_Linear(int n, int m, Matrix* specify_w, Matrix* specify_b){
+nn_node* init_Linear(int n, int m, Matrix *specify_w, Matrix *specify_b){
     Linear *linear = malloc(sizeof(Linear));
     linear->w = specify_w;
     linear->b = specify_b;
@@ -27,13 +27,14 @@ nn_node* init_Linear(int n, int m, Matrix* specify_w, Matrix* specify_b){
     return linear_node;
 
 }
-Matrix* Linear_forward(struct linear_* self, Matrix* x){
+Matrix* Linear_forward(Linear *self, Matrix *x){
     Matrix *mul_result = mul(self->w, x);
     Matrix *result = add(mul_result, self->b);
     free_matrix(mul_result);
     return result;
 }
 
+//計算dz每個batch的平均，算出db
 Matrix *db_calculate(Matrix *dz){
     Matrix *db = init_matrix(dz->row, 1);
     for (int i = 0; i < dz->row;i++){
@@ -45,7 +46,7 @@ Matrix *db_calculate(Matrix *dz){
         
 }
 
-Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer){
+Matrix* Linear_backward(Linear *self, Matrix *dz, Matrix *x, optim *optimizer){
     //Update
     Matrix *xT = transpose(x);
     Matrix *dw = mul(dz, xT);
@@ -67,8 +68,8 @@ Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* opti
     free_matrix(ori_b);
 
     //calculate output
-    Matrix* wT = transpose(self->w);
-    Matrix* output = mul(wT, dz);
+    Matrix *wT = transpose(self->w);
+    Matrix *output = mul(wT, dz);
     free_matrix(wT);
 
     return output;

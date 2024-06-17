@@ -44,7 +44,9 @@ typedef struct linear_{
     Matrix *sdb;//n x 1
     Matrix* (*forward)(struct linear_* self, Matrix* x);
     Matrix* (*backward)(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer);
-    /*
+    
+}Linear; 
+/*
     forward:
         輸入一個matrix x
         計算mul(w, x) + b並輸出該結果
@@ -58,8 +60,7 @@ typedef struct linear_{
         丟進去更新w, b
         然後計算W^TdZ並回傳
 
-    */
-}Linear; 
+*/
 nn_node* init_Linear(int n, int m, Matrix* specify_w, Matrix* specify_b);//n, m, 指定w, 指定b
 Matrix* Linear_forward(struct linear_* self, Matrix* x);
 Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer);

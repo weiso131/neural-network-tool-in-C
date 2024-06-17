@@ -13,7 +13,7 @@ nn_node* init_drop(double drop_rate){
     *drop_node = (nn_node){NULL, NULL, drop, DROP};
     return drop_node;
 }
-Matrix *drop_forward(Drop* self, Matrix *x){
+Matrix *drop_forward(Drop *self, Matrix *x){
     Matrix *output = init_matrix(x->row, x->col);
     double drop_rate = self->drop_rate;
     srand(time(NULL));

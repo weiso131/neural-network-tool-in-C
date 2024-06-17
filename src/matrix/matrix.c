@@ -14,7 +14,7 @@ Matrix* identity(int n){
     return matrix;
 }
 
-Matrix* copy(Matrix* m){
+Matrix* copy(Matrix *m){
     Matrix *p = init_matrix(m->row, m->col);
     double *tar = p->entry, *end = tar + m->row * m->col, *src = m->entry;
     for (;tar != end;tar++, src++)
@@ -22,7 +22,7 @@ Matrix* copy(Matrix* m){
     return p;
 }
 
-Matrix* argmax(Matrix* matrix, int dim){
+Matrix* argmax(Matrix *matrix, int dim){
     int n = matrix->row * (1 - dim) + matrix->col * dim, \
         m = matrix->col * (1 - dim) + matrix->row * dim, \
         mul_i = matrix->col * (1 - dim) + dim, \

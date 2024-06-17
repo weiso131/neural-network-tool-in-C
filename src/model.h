@@ -39,5 +39,5 @@ void train_impl(Model *self, optim*, int, dataloader*, dataloader*, loss_f*);
 */
 
 
-Model* create_model();
+Model* init_model();
 #endif

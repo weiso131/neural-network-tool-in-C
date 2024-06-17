@@ -4,8 +4,6 @@
 #include<math.h>
 #include "omp.h"
 
-const int THREAD_NUM = 4;
-
 #define sizeCheck(warning){\
     if (!(m1->row == m2->row && m1->col == m2->col) && \
     !(m2->col == m1->col && m2->row == 1) && !(m2->row == m1->row && m2->col == 1)\
@@ -21,7 +19,7 @@ for (int _i = 0;_i < m1->row;++_i)\
         *((m1->entry) + _i * m1->col + _j) oper *((m2->entry) + (_i % m2->row) * m2->col + (_j % m2->col));\
 
 
-Matrix* mul(Matrix* m1, Matrix* m2){
+Matrix* mul(Matrix *m1, Matrix *m2){
     //size _Check
     if (m1->col != m2->row){
         printf("mul return NULL\n");
@@ -40,7 +38,7 @@ Matrix* mul(Matrix* m1, Matrix* m2){
     return result;
 }
 
-Matrix* dot(Matrix* m1, Matrix* m2){
+Matrix* dot(Matrix *m1, Matrix *m2){
     sizeCheck("dot return NULL");
     Matrix* result = init_matrix(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
@@ -48,7 +46,7 @@ Matrix* dot(Matrix* m1, Matrix* m2){
     return result;
 }
 
-Matrix* scale(Matrix* m1, double x){
+Matrix* scale(Matrix *m1, double x){
     Matrix* result = init_matrix(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
     for (int i = 0;i < m1->col * m1->row;++i)
@@ -56,7 +54,7 @@ Matrix* scale(Matrix* m1, double x){
     return result;
 }
 
-Matrix* add(Matrix* m1, Matrix* m2){
+Matrix* add(Matrix *m1, Matrix *m2){
     sizeCheck("add return NULL");
     Matrix* result = init_matrix(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
@@ -64,7 +62,7 @@ Matrix* add(Matrix* m1, Matrix* m2){
     return result;
 }
 
-Matrix* sub(Matrix* m1, Matrix* m2){
+Matrix* sub(Matrix *m1, Matrix *m2){
     sizeCheck("sub return NULL");
     Matrix* result = init_matrix(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
@@ -72,7 +70,7 @@ Matrix* sub(Matrix* m1, Matrix* m2){
     return result;
 }
 
-Matrix* addScale(Matrix* m1, double x){
+Matrix* addScale(Matrix *m1, double x){
     Matrix* result = init_matrix(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
     for (int i = 0;i < m1->col * m1->row;++i)
@@ -97,7 +95,11 @@ Matrix *transpose(Matrix *m1){
             *(result->entry + i * m1->row + j) = *(m1->entry + j * m1->col + i);
     return result;
 }
+
+//把double跟int64包成union，方便位元運算、無分支程式
 #define double_int union{double d;int64_t i;}
+
+//無分支的取max
 double doubleMax(double a, double b){
     double_int a_union = {.d = a};
     double_int b_union = {.d = b};

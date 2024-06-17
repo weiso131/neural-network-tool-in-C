@@ -11,12 +11,13 @@
     free_matrix(trash);\
 }
 
+//儲存各層output的stack
 typedef struct outputNode_{
-    Matrix* output;
-    struct outputNode_* prev;
+    Matrix *output;
+    struct outputNode_ *prev;
 }outputNode;
 
-outputNode *outputNode_create(Matrix* output){
+outputNode *outputNode_create(Matrix *output){
     outputNode *node = malloc(sizeof(outputNode));
     *node = (outputNode){output, NULL};
     return node;
@@ -35,13 +36,13 @@ void pop_outputNode(outputNode **head){
 
 
 
-Model* create_model(){
-    Model* model = malloc(sizeof(Model));
+Model* init_model(){
+    Model *model = malloc(sizeof(Model));
     *model = (Model){NULL, NULL, model_add_impl, predict_impl, train_impl};
     return model;
 }
 
-void model_add_impl(Model *self, nn_node* newNode){
+void model_add_impl(Model *self, nn_node *newNode){
     if (self->begin == NULL)
         self->begin = newNode;
     if (self->end != NULL)
@@ -52,9 +53,9 @@ void model_add_impl(Model *self, nn_node* newNode){
 
 Matrix* forward(Model *self, Matrix *data, outputNode **outputLinklist){
     nn_node *SerialNode = self->begin;
-    Matrix* result = data;
+    Matrix *result = data;
     while (SerialNode != NULL){
-        Matrix* new_result;
+        Matrix *new_result;
         NNtype member_type = SerialNode->menber_type;
         if (member_type == LINEAR){
             Forward_type_transfor(Linear, SerialNode->nn_menber, new_result, result);
@@ -79,7 +80,7 @@ Matrix* predict_impl(Model *self, Matrix *data){
     return forward(self, data, NULL);
 }
 
-void train_impl(Model *self, optim* optimizer, int epoch, dataloader* train_data, dataloader* valid_data, loss_f* loss_function){
+void train_impl(Model *self, optim *optimizer, int epoch, dataloader *train_data, dataloader *valid_data, loss_f *loss_function){
     
     
     for (int t = 0;t < epoch;t++){
@@ -88,8 +89,8 @@ void train_impl(Model *self, optim* optimizer, int epoch, dataloader* train_data
         int validBatchLength = valid_data->data_length / valid_data->batch_size;
         for (int batchNum = 0;batchNum < trainBatchLength;batchNum++){
             outputNode *outputLinklist = outputNode_create(NULL);
-            Matrix* data = train_data->batches[batchNum]->data;
-            Matrix* label = train_data->batches[batchNum]->label;
+            Matrix *data = train_data->batches[batchNum]->data;
+            Matrix *label = train_data->batches[batchNum]->label;
 
             Matrix *predict = forward(self, data, &outputLinklist);
             Matrix *dz = loss_function->get_gredient(predict, label);
@@ -120,8 +121,8 @@ void train_impl(Model *self, optim* optimizer, int epoch, dataloader* train_data
             free_matrix(predict);
         }
         for (int batchNum = 0;batchNum < validBatchLength;batchNum++){
-            Matrix* data = valid_data->batches[batchNum]->data;
-            Matrix* label = valid_data->batches[batchNum]->label;
+            Matrix *data = valid_data->batches[batchNum]->data;
+            Matrix *label = valid_data->batches[batchNum]->label;
             Matrix *predict = forward(self, data, NULL);
             valid_loss += loss_function->get_loss_item(predict, label);
             free_matrix(predict);

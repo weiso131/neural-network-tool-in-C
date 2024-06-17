@@ -19,5 +19,5 @@ Matrix* addScalar(Matrix*, double);
 
 Matrix* apply(Matrix*, act_f);
 Matrix* transpose(Matrix*);
-Matrix* softmax(Matrix *x);
+Matrix* softmax(Matrix*);
 #endif
