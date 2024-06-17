@@ -130,7 +130,7 @@ void train_impl(Model *self, optim *optimizer, int epoch, dataloader *train_data
             free_matrix(predict);
         }
 
-        if ((t + 1) % (epoch / 10) == 0){
+        if (epoch / 10 != 0 && (t + 1) % (epoch / 10) == 0){
             printf("epoch: %d, train loss: %lf, valid loss: %lf\n", t + 1, \
             train_loss / trainBatchLength, valid_loss / validBatchLength);
         }
