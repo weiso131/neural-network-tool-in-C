@@ -5,9 +5,6 @@
 Matrix* CrossEntropy_get_gredient(Matrix *predict, Matrix *label){
     Matrix *probability = softmax(predict);
     Matrix *output = sub(probability, label);
-    print_matrix(probability);
-    print_matrix(label);
-    print_matrix(output);
     free_matrix(probability);
     return output;
 }

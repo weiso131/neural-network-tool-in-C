@@ -113,9 +113,19 @@ double doubleMax(double a, double b){
 
 Matrix* softmax(Matrix *x){
     Matrix* output = init_matrix(x->row, x->col);
-    double maxElement = -1e9, sum = 0;
-    for (int i = 0;i < x->col * x->row;i++) maxElement = doubleMax(maxElement, x->entry[i]);
-    for (int i = 0;i < x->col * x->row;i++) sum += exp(x->entry[i] - maxElement);
-    for (int i = 0;i < x->col * x->row;i++) output->entry[i] = exp(x->entry[i] - maxElement) / sum;
+    
+
+    for (int i = 0;i < x->col;i++){
+        double maxElement = -1e9, sum = 0;
+        for (int j = 0;j < x->row;j++)             
+            maxElement = doubleMax(maxElement, x->entry[j * x->col + i]);
+        for (int j = 0;j < x->row;j++) 
+            sum += exp(x->entry[j * x->col + i] - maxElement);
+        for (int j = 0;j < x->row;j++) 
+            output->entry[j * x->col + i] = exp(x->entry[j * x->col + i] - maxElement) / sum;
+        
+    }
+
+    
     return output;
 }

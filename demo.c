@@ -61,11 +61,11 @@ int main(){
         free_vectors(data, data_col);
         return -1;
     }
-    printf("%d\n", data_row);
+    
     dataloader *trainDataloader = init_dataloader(data, target, 64, 800, 1);
     dataloader *validDataloader = init_dataloader(data + 800, target + 800, 64, 91, 1);
 
-    Model *myModel = create_model();
+    Model *myModel = init_model();
     myModel->add(myModel, init_Linear(16, data_col, NULL, NULL));
     myModel->add(myModel, init_ReLU());
     myModel->add(myModel, init_Linear(4, 16, NULL, NULL));
@@ -76,7 +76,7 @@ int main(){
     getAcc_(trainDataloader, myModel, "train acc:");
     getAcc_(validDataloader, myModel, "valid acc:");
 
-    myModel->train(myModel ,init_Adam(0.01, 0.9, 0.999, 1e-8), 1000, trainDataloader, validDataloader, init_MSELoss());
+    myModel->train(myModel ,init_Adam(0.01, 0.9, 0.999, 1e-8), 1000, trainDataloader, validDataloader, init_CrossEntropy());
 
     printf("訓練後:\n");
     getAcc_(trainDataloader, myModel, "train acc:");
