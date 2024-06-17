@@ -146,3 +146,40 @@ void train_impl(Model *self, optim *optimizer, int epoch, dataloader *train_data
 }
 
 
+void Serialize(Model *self, char *fileName){
+    FILE *file = fopen(fileName, "wb");
+    nn_node *SerialNode = self->begin;
+    while (SerialNode != NULL){
+        NNtype member_type = SerialNode->menber_type;
+
+        if (member_type == LINEAR){
+            Linear *linear_obj = (Linear *) SerialNode->nn_menber;
+            fwrite(linear_obj->w->entry, sizeof(double), linear_obj->w->row * linear_obj->w->col, file);
+            fwrite(linear_obj->b->entry, sizeof(double), linear_obj->b->row * linear_obj->b->col, file);
+
+            
+
+        }
+        SerialNode = SerialNode->next;  
+    }
+    fclose(file);
+}
+
+void deSerialize(Model *self, char *fileName){
+    FILE *file = fopen(fileName, "rb");
+    nn_node *SerialNode = self->begin;
+    while (SerialNode != NULL){
+        NNtype member_type = SerialNode->menber_type;
+
+        if (member_type == LINEAR){
+            Linear *linear_obj = (Linear *) SerialNode->nn_menber;
+            free(linear_obj->w->entry);
+            fread(linear_obj->w->entry, sizeof(double), linear_obj->w->row * linear_obj->w->col, file);
+            free(linear_obj->b->entry);
+            fread(linear_obj->b->entry, sizeof(double), linear_obj->b->row * linear_obj->b->col, file);
+            
+        }
+        SerialNode = SerialNode->next;  
+    }
+    fclose(file);
+}

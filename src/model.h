@@ -35,9 +35,14 @@ Matrix* predict_impl(Model *self, Matrix *data);
 
 void train_impl(Model *self, optim*, int, dataloader*, dataloader*, loss_f*);
 /*
-
+反向傳播:
 */
 
 
 Model* init_model();
+
+
+void Serialize(Model *self, char *fileName);
+void deSerialize(Model *self, char *fileName);
+
 #endif

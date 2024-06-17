@@ -29,20 +29,7 @@ Matrix **read_vectors(char* file, int *row, int *col){
     return vectors;
 }
 
-// void Serialize(Model *model, FILE *file){
-//     nn_node *SerialNode = model->begin;
-//     while (SerialNode != NULL){
-//         NNtype member_type = SerialNode->menber_type;
 
-//         if (member_type == LINEAR){
-//             Linear *
-//         }
-//         SerialNode = SerialNode->next;
-
-        
-            
-//     }
-// }
 
 
 void getAcc(dataloader *loader, Model *model, char *Name){
@@ -82,9 +69,9 @@ int main(){
     dataloader *validDataloader = init_dataloader(data + 800, target + 800, 64, 91, 1);
 
     Model *myModel = init_model();
-    myModel->add(myModel, init_Linear(data_col, 4, NULL, NULL));
+    myModel->add(myModel, init_Linear(data_col, 16, NULL, NULL));
     myModel->add(myModel, init_ReLU());
-    myModel->add(myModel, init_Linear(4, target_col, NULL, NULL));
+    myModel->add(myModel, init_Linear(16, target_col, NULL, NULL));
     
     printf("訓練前:\n");
     getAcc(trainDataloader, myModel, "train acc:");
@@ -96,5 +83,19 @@ int main(){
     getAcc(trainDataloader, myModel, "train acc:");
     getAcc(validDataloader, myModel, "valid acc:");
 
+    Serialize(myModel, "model.bin");
+
+
+    Model *newModel = init_model();
+    newModel->add(newModel, init_Linear(data_col, 16, NULL, NULL));
+    newModel->add(newModel, init_ReLU());
+    newModel->add(newModel, init_Linear(16, target_col, NULL, NULL));
+
+    printf("deserialize:\n");
+    deSerialize(newModel, "model.bin");
+    getAcc(trainDataloader, newModel, "train acc:");
+    getAcc(validDataloader, newModel, "valid acc:");
+
+    
     return 0;
 }

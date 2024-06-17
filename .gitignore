@@ -8,3 +8,4 @@ test_model
 test_dataloader
 demo
 *.csv
+*.bin
