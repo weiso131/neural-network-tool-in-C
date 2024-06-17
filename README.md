@@ -3,10 +3,6 @@
 ## 簡介
 一個簡單的深度學習工具，能訓練自定義的順序模型
 
-## 目錄
-- [使用方法](#使用方法)
-- [功能介紹](#功能介紹)
-
 
 ## 使用方法
 
@@ -31,11 +27,11 @@ dataloader *validDataloader = init_dataloader(validInput, validTarget, validBatc
 #### 範例
 ```c
 Model *myModel = init_model();
-myModel->add(myModel, init_Linear(16, input_dim, NULL, NULL));
+myModel->add(myModel, init_Linear(input_dim, 16, NULL, NULL));
 myModel->add(myModel, init_ReLU());
-myModel->add(myModel, init_Linear(4, 16, NULL, NULL));
+myModel->add(myModel, init_Linear(16, 4, NULL, NULL));
 myModel->add(myModel, init_ReLU());
-myModel->add(myModel, init_Linear(target_dim, 4, NULL, NULL));
+myModel->add(myModel, init_Linear(4, output_dim, NULL, NULL));
 ```
 
 ### 開始訓練以及使用
@@ -47,7 +43,9 @@ Matrix *predict = myModel->predict(myModel, trainInput[0]);
 print_matrix(predict);
 ```
 
+### 編譯
+- 將makefile的Main改成你的main.c
+- 將target改成你要的名字
 
 
-## 功能介紹
 
