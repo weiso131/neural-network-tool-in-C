@@ -2,9 +2,9 @@
 
 int main(){
     Model *myModel = init_model();
-    myModel->add(myModel, init_Linear(16, 5, NULL, NULL)); 
+    myModel->add(myModel, init_Linear(5, 16, NULL, NULL)); 
     myModel->add(myModel, init_ReLU());
-    myModel->add(myModel, init_Linear(3, 16, NULL, NULL));   
+    myModel->add(myModel, init_Linear(16, 3, NULL, NULL));   
     printf("Forward:\n");
     nn_node *start = myModel->begin;
     while (start != NULL){

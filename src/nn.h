@@ -61,7 +61,7 @@ typedef struct linear_{
         然後計算W^TdZ並回傳
 
 */
-nn_node* init_Linear(int n, int m, Matrix* specify_w, Matrix* specify_b);//n, m, 指定w, 指定b
+nn_node* init_Linear(int input_dim, int output_dim, Matrix* specify_w, Matrix* specify_b);//n, m, 指定w, 指定b
 Matrix* Linear_forward(struct linear_* self, Matrix* x);
 Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer);
 typedef struct act_func_{

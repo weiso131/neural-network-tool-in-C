@@ -29,7 +29,7 @@ Matrix **read_vectors(char* file, int *row, int *col){
     return vectors;
 }
 
-void getAcc_(dataloader *loader, Model *model, char *Name){
+void getAcc(dataloader *loader, Model *model, char *Name){
     double acc = 0, total = loader->data_length;
 
     for (int batchNum = 0;batchNum < loader->data_length / loader->batch_size;batchNum++){
@@ -66,21 +66,21 @@ int main(){
     dataloader *validDataloader = init_dataloader(data + 800, target + 800, 64, 91, 1);
 
     Model *myModel = init_model();
-    myModel->add(myModel, init_Linear(16, data_col, NULL, NULL));
+    myModel->add(myModel, init_Linear(data_col, 16, NULL, NULL));
     myModel->add(myModel, init_ReLU());
-    myModel->add(myModel, init_Linear(4, 16, NULL, NULL));
+    myModel->add(myModel, init_Linear(16, 16, NULL, NULL));
     myModel->add(myModel, init_ReLU());
-    myModel->add(myModel, init_Linear(target_col, 4, NULL, NULL));
+    myModel->add(myModel, init_Linear(16, target_col, NULL, NULL));
     
     printf("訓練前:\n");
-    getAcc_(trainDataloader, myModel, "train acc:");
-    getAcc_(validDataloader, myModel, "valid acc:");
+    getAcc(trainDataloader, myModel, "train acc:");
+    getAcc(validDataloader, myModel, "valid acc:");
 
     myModel->train(myModel ,init_Adam(0.01, 0.9, 0.999, 1e-8), 1000, trainDataloader, validDataloader, init_CrossEntropy());
 
     printf("訓練後:\n");
-    getAcc_(trainDataloader, myModel, "train acc:");
-    getAcc_(validDataloader, myModel, "valid acc:");
+    getAcc(trainDataloader, myModel, "train acc:");
+    getAcc(validDataloader, myModel, "valid acc:");
 
     return 0;
 }

@@ -7,7 +7,7 @@ void test_lenear(){
     Matrix* bias = init_matrix(3, 1);
     fill(weight, 0.5);
     fill(bias, 0.1);
-    nn_node* linear_obj = init_Linear(3, 5, weight, bias);
+    nn_node* linear_obj = init_Linear(5, 3, weight, bias);
     Linear* linear = (Linear*)linear_obj->nn_menber;
 
     //data

@@ -1,20 +1,20 @@
 #include "nn.h"
 
-nn_node* init_Linear(int n, int m, Matrix *specify_w, Matrix *specify_b){
+nn_node* init_Linear(int input_dim, int output_dim, Matrix *specify_w, Matrix *specify_b){
     Linear *linear = malloc(sizeof(Linear));
     linear->w = specify_w;
     linear->b = specify_b;
-    if (specify_w == NULL || specify_w->row != n || specify_w->col != m){
-        linear->w = init_matrix(n, m);
+    if (specify_w == NULL || specify_w->row != output_dim || specify_w->col != input_dim){
+        linear->w = init_matrix(output_dim, input_dim);
         random_fill(linear->w);
     }
-    if (specify_b == NULL || specify_b->row != n || specify_b->col != 1){
-        linear->b = init_matrix(n, 1);
+    if (specify_b == NULL || specify_b->row != output_dim || specify_b->col != 1){
+        linear->b = init_matrix(output_dim, 1);
         random_fill(linear->b);
     }
 
 
-    *linear = (Linear){linear->w, linear->b, init_matrix(n, m), init_matrix(n, m), init_matrix(n, 1), init_matrix(n, 1), Linear_forward, Linear_backward};
+    *linear = (Linear){linear->w, linear->b, init_matrix(output_dim, input_dim), init_matrix(output_dim, input_dim), init_matrix(output_dim, 1), init_matrix(output_dim, 1), Linear_forward, Linear_backward};
 
     fill(linear->vdw, 0);
     fill(linear->sdw, 0);
