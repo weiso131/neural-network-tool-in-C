@@ -94,6 +94,7 @@ Matrix* sigmoid_backward(Sigmoid *self, Matrix* dz, Matrix* x, optim* optimizer)
 
 typedef struct drop_{
     double drop_rate;//(0, 1)
+    Matrix* drop_matrix;
     Matrix* (*forward)(struct drop_* self, Matrix* x);
     Matrix* (*backward)(struct drop_* self, Matrix* dz, Matrix* x, optim* optimizer);
 }Drop;
@@ -104,6 +105,8 @@ Matrix *drop_backward(Drop* self, Matrix* dz, Matrix* x, optim* optimizer);
 drop:
     forward
         輸入matrix上的每個數值都有固定機率drop_rate變成0再輸出
+        並將每個元素是否被drop存在drop_matrix裡
+        存的時候順便/(1-drop_rate) 這樣backward時的答案就是drop_matrix了
     backward
         https://blog.csdn.net/mch2869253130/article/details/119809360
         輸入dz, x, optimzizer
