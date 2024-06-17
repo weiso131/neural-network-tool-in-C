@@ -7,27 +7,32 @@ nn_node* init_drop(double drop_rate){
         printf("drop rate must be (0, 1]\n");
         return NULL;
     }
-    *drop = (Drop){drop_rate, drop_forward};
+    *drop = (Drop){drop_rate, NULL, drop_forward, drop_backward};
 
     nn_node *drop_node = malloc(sizeof(nn_node));
     *drop_node = (nn_node){NULL, NULL, drop, DROP};
     return drop_node;
 }
 Matrix *drop_forward(Drop *self, Matrix *x){
+    if (!self->drop_matrix)
+        self->drop_matrix = init_matrix(x->row, x->col);
     Matrix *output = init_matrix(x->row, x->col);
     double drop_rate = self->drop_rate;
     srand(time(NULL));
 
-    for (int i = 0;i < x->row * x->col;i++){
+    for (int i = 0;i < x->row * x->col; i++){
         if ((double)rand() / (double)RAND_MAX < drop_rate)
-            output->entry[i] = 0;
-        else
+            self->drop_matrix->entry[i] = output->entry[i] = 0;
+        else{
             output->entry[i] = x->entry[i];
+            self->drop_matrix->entry[i] = 1 / (1 - drop_rate);
+        }
     }
         
 
     return output;
 }
 
-//drop backward尚未完成
-//https://blog.csdn.net/mch2869253130/article/details/119809360
+Matrix *drop_backward(Drop* self, Matrix* dz, Matrix* x, optim* optimizer){
+    return self->drop_rate;
+}
