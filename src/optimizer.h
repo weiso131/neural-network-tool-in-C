@@ -17,8 +17,8 @@ optim* init_Adam(double init_lr, double beta1, double beta2, double epsilon);
     double是learning rate
 
 2.  更新linear的時候:
-    w = optimize(dw);
-    b = optimize(b);
+    w = w - optimize(dw, vdw, sdw);
+    b = b - optimize(db, vdw, sdw);
 
 3.  使用者create一個Adam的object之後
     要傳入Adam_object給model.train()

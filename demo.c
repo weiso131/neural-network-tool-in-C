@@ -7,7 +7,7 @@
 Matrix **create_vectors(int nums, int each_len){
     Matrix **vectors = malloc(nums * sizeof(Matrix*));
     for (int i = 0; i < nums; ++i)
-        vectors[i] = create(each_len, 1);
+        vectors[i] = init_matrix(each_len, 1);
     return vectors;
 }
 
@@ -66,10 +66,12 @@ int main(){
     dataloader *validDataloader = init_dataloader(data + 800, target + 800, 64, 91, 1);
 
     Model *myModel = create_model();
-    myModel->add(myModel, Linear_init(16, data_col, NULL, NULL));
-    myModel->add(myModel, ReLU_init());
-    myModel->add(myModel, Linear_init(target_col, 16, NULL, NULL));
-
+    myModel->add(myModel, init_Linear(16, data_col, NULL, NULL));
+    myModel->add(myModel, init_ReLU());
+    myModel->add(myModel, init_Linear(4, 16, NULL, NULL));
+    myModel->add(myModel, init_ReLU());
+    myModel->add(myModel, init_Linear(target_col, 4, NULL, NULL));
+    
     printf("訓練前:\n");
     getAcc_(trainDataloader, myModel, "train acc:");
     getAcc_(validDataloader, myModel, "valid acc:");

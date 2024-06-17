@@ -30,8 +30,8 @@ dataloader* init_dataloader(Matrix **data, Matrix **label, int batch_size, int d
         if (col == 0)
             break;
         loader->batches[batch_num] = malloc(sizeof(batch_data));
-        loader->batches[batch_num]->data = create((*data)->row, col);
-        loader->batches[batch_num]->label = create((*label)->row, col);
+        loader->batches[batch_num]->data = init_matrix((*data)->row, col);
+        loader->batches[batch_num]->label = init_matrix((*label)->row, col);
         
         for (int matrix_num = 0; matrix_num < col; ++matrix_num){
             for(int j = 0; j < col; ++j){

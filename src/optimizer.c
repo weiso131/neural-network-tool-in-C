@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 Matrix* adam_optimize(optim* self, Matrix* dw, Matrix* Vdw, Matrix* Sdw){
-    Matrix *output = create(dw->row, dw->col);
+    Matrix *output = init_matrix(dw->row, dw->col);
     for (int i = 0, row = dw->row, col = dw->col; i < row; ++i){
         for (int j = 0; j < col; ++j){
             Vdw->entry[i * col + j] = self->beta1 * Vdw->entry[i * col + j] + (1 - self->beta1) * dw->entry[i * col + j];

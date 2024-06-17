@@ -3,16 +3,16 @@
 void test_lenear(){
     optim* optimizer = init_Adam(0.01, 0.9, 0.999, 1e-8);
     loss_f* loss_function = init_MSELoss();
-    Matrix* weight = create(3, 5);
-    Matrix* bias = create(3, 1);
+    Matrix* weight = init_matrix(3, 5);
+    Matrix* bias = init_matrix(3, 1);
     fill(weight, 0.5);
     fill(bias, 0.1);
-    nn_node* linear_obj = Linear_init(3, 5, weight, bias);
+    nn_node* linear_obj = init_Linear(3, 5, weight, bias);
     Linear* linear = (Linear*)linear_obj->nn_menber;
 
     //data
-    Matrix* input = create(5, 2);
-    Matrix* target = create(3, 2);
+    Matrix* input = init_matrix(5, 2);
+    Matrix* target = init_matrix(3, 2);
     double input_entry[] = {0.1, 0.5, 0.6, 0.89, 0.34, 0.1, 0.5, 0.6, 0.89, 0.34};
     double target_entry[] = {1.0, 0.0, 0.0, 1.0, 0.0, 0.0};
     input->entry = input_entry;
@@ -54,10 +54,10 @@ void test_lenear(){
 }
 
 int main(){
-    nn_node* relu_obj = ReLU_init();
+    nn_node* relu_obj = init_ReLU();
     Act_func *relu = (Act_func*)relu_obj->nn_menber;
     
-    Matrix *testReLUVec = create(4, 1);
+    Matrix *testReLUVec = init_matrix(4, 1);
     double testReLUVec_entry[] = {4.8763, -4.8763, 114.514, -114.514};
     testReLUVec->entry = testReLUVec_entry;
     printf("test relu forward\n");
@@ -66,13 +66,13 @@ int main(){
     printf("test relu backward\n");
     print_matrix(relu->backward(relu, testReLUVec, testReLUVec, NULL));
 
-    Matrix *testSoftmaxVec = create(10, 1);
+    Matrix *testSoftmaxVec = init_matrix(10, 1);
     double testSoftmaxVec_entry[] = {4, 8, 7, 6, 3, 4, 8, 7, 6, 3};
     testSoftmaxVec->entry = testSoftmaxVec_entry;
 
 
 
-    nn_node *drop_obj = drop_init(0.1);
+    nn_node *drop_obj = init_drop(0.1);
     Drop *drop = (Drop*)drop_obj->nn_menber;
 
     printf("test drop forward:\n");

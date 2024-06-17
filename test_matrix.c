@@ -9,7 +9,7 @@ double test_apply(double x){
 
 
 int main(){
-    Matrix *m1 = create(3, 3), *m2 = create(3, 1);
+    Matrix *m1 = init_matrix(3, 3), *m2 = init_matrix(3, 1);
     fill(m1, 2);
     fill(m2, 4);
 
@@ -42,7 +42,7 @@ int main(){
     free_matrix(identity_matrix);
 
 
-    Matrix *normal = create(4, 3);
+    Matrix *normal = init_matrix(4, 3);
     random_fill(normal);
     printf("test random\n");
     print_matrix(normal);
@@ -60,7 +60,7 @@ int main(){
     free_matrix(argmax1);
 
 
-    m1 = create(3, 3), m2 = create(3, 3);
+    m1 = init_matrix(3, 3), m2 = init_matrix(3, 3);
     fill(m1, 2);
     fill(m2, 4);
     Matrix *mAdd = add(m1, m2);
@@ -74,7 +74,7 @@ int main(){
     
     
 
-    m1 = identity(10), m2 = create(10, 1);
+    m1 = identity(10), m2 = init_matrix(10, 1);
     fill(m2, 4);
 
     Matrix *mul_result = mul(m1, m2);
@@ -109,7 +109,7 @@ int main(){
     
     free_matrix(m1);
     printf("test sub\n");
-    m1 = create(4, 4), m2 = create(4, 4);
+    m1 = init_matrix(4, 4), m2 = init_matrix(4, 4);
     fill(m1, 2);
     fill(m2, 1);
     

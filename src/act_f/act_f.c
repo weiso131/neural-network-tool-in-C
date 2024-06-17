@@ -1,6 +1,6 @@
 #include "../nn.h"
 #include "act_f_impl.h"
-nn_node* ReLU_init(){
+nn_node* init_ReLU(){
     ReLU* relu = malloc(sizeof(ReLU));
     *relu = (ReLU){relu_forward, relu_backward};
 

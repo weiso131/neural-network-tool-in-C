@@ -1,13 +1,13 @@
 #include "matrix.h"
 
-Matrix* create(int row, int col){
+Matrix* init_matrix(int row, int col){
     Matrix* m = malloc(sizeof(Matrix));
     *m = (Matrix){row, col, malloc(sizeof(double*))};
     m->entry = malloc(row * col * sizeof(double));
     return m;
 }
 Matrix* identity(int n){
-    Matrix* matrix = create(n, n);
+    Matrix* matrix = init_matrix(n, n);
     for (int i = 0;i < matrix->row;i++)
         for (int j = 0;j < matrix->col;j++)
             *((matrix->entry) + i * matrix->col + j) = (double)(i == j);
@@ -15,7 +15,7 @@ Matrix* identity(int n){
 }
 
 Matrix* copy(Matrix* m){
-    Matrix *p = create(m->row, m->col);
+    Matrix *p = init_matrix(m->row, m->col);
     double *tar = p->entry, *end = tar + m->row * m->col, *src = m->entry;
     for (;tar != end;tar++, src++)
         *tar = *src;
@@ -28,7 +28,7 @@ Matrix* argmax(Matrix* matrix, int dim){
         mul_i = matrix->col * (1 - dim) + dim, \
         mul_j = matrix->col * dim + (1 - dim);
 
-    Matrix *argmaxArray = create(n, 1);
+    Matrix *argmaxArray = init_matrix(n, 1);
 
     for (int i = 0;i < n;i++){
         int maxIndex = 0;

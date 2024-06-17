@@ -30,7 +30,7 @@ void random_fill(Matrix *matrix);
 
 void print_matrix(Matrix *matrix);
 
-Matrix* create(int, int);
+Matrix* init_matrix(int, int);
 //創建一個新的矩陣
 
 Matrix* identity(int);

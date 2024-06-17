@@ -2,9 +2,9 @@
 
 int main(){
     Model *myModel = create_model();
-    myModel->add(myModel, Linear_init(16, 5, NULL, NULL)); 
-    myModel->add(myModel, ReLU_init());
-    myModel->add(myModel, Linear_init(3, 16, NULL, NULL));   
+    myModel->add(myModel, init_Linear(16, 5, NULL, NULL)); 
+    myModel->add(myModel, init_ReLU());
+    myModel->add(myModel, init_Linear(3, 16, NULL, NULL));   
     printf("Forward:\n");
     nn_node *start = myModel->begin;
     while (start != NULL){
@@ -41,14 +41,14 @@ int main(){
         double input_entry[] = {0.1, 0.5, 0.6, 0.89, 0.34};
         double target_entry[] = {1.0, 0.0, 0.0};
         
-        data[i] = create(5, 1);
-        label[i] = create(3, 1);
+        data[i] = init_matrix(5, 1);
+        label[i] = init_matrix(3, 1);
         
         data[i]->entry = input_entry;
         label[i]->entry = target_entry;
     }
 
-    Matrix* input = create(5, 1);
+    Matrix* input = init_matrix(5, 1);
     double input_entry[] = {0.1, 0.5, 0.6, 0.89, 0.34};
     input->entry = input_entry;
 

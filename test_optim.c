@@ -7,9 +7,9 @@ int main(){
     double Sdw_entry[] = {1, 1, 1, 1};
     double Vdw_entry[] = {1, 1, 1, 1};
 
-    Matrix *dw = create(2, 2);
-    Matrix *Sdw = create(2, 2);
-    Matrix *Vdw = create(2, 2);
+    Matrix *dw = init_matrix(2, 2);
+    Matrix *Sdw = init_matrix(2, 2);
+    Matrix *Vdw = init_matrix(2, 2);
 
     dw->entry = dw_entry;
     Sdw->entry = Sdw_entry;

@@ -6,8 +6,8 @@ int main(){
     Matrix **data = (Matrix **)malloc(sizeof(Matrix *) * data_length),
            **label = (Matrix **)malloc(sizeof(Matrix *) * data_length);
     for (int i = 0; i < data_length; i++){
-        data[i] = (Matrix*)create(4, 1);
-        label[i] = (Matrix*)create(2, 1);
+        data[i] = (Matrix*)init_matrix(4, 1);
+        label[i] = (Matrix*)init_matrix(2, 1);
         fill(data[i], i);
         fill(label[i], i);
     }

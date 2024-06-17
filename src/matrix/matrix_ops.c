@@ -27,7 +27,7 @@ Matrix* mul(Matrix* m1, Matrix* m2){
         printf("mul return NULL\n");
         return NULL;
     }
-    Matrix* result = create(m1->row, m2->col);
+    Matrix* result = init_matrix(m1->row, m2->col);
     #pragma omp parallel for schedule(static)
     for (int i = 0;i < m1->row;i++){
         for (int j = 0;j < m2->col;j++){
@@ -42,14 +42,14 @@ Matrix* mul(Matrix* m1, Matrix* m2){
 
 Matrix* dot(Matrix* m1, Matrix* m2){
     sizeCheck("dot return NULL");
-    Matrix* result = create(m1->row, m1->col);
+    Matrix* result = init_matrix(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
     operation(*);
     return result;
 }
 
 Matrix* scale(Matrix* m1, double x){
-    Matrix* result = create(m1->row, m1->col);
+    Matrix* result = init_matrix(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
     for (int i = 0;i < m1->col * m1->row;++i)
         *(result->entry + i) = *(m1->entry + i) * x;
@@ -58,7 +58,7 @@ Matrix* scale(Matrix* m1, double x){
 
 Matrix* add(Matrix* m1, Matrix* m2){
     sizeCheck("add return NULL");
-    Matrix* result = create(m1->row, m1->col);
+    Matrix* result = init_matrix(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
     operation(+);
     return result;
@@ -66,14 +66,14 @@ Matrix* add(Matrix* m1, Matrix* m2){
 
 Matrix* sub(Matrix* m1, Matrix* m2){
     sizeCheck("sub return NULL");
-    Matrix* result = create(m1->row, m1->col);
+    Matrix* result = init_matrix(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
     operation(-);
     return result;
 }
 
 Matrix* addScale(Matrix* m1, double x){
-    Matrix* result = create(m1->row, m1->col);
+    Matrix* result = init_matrix(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
     for (int i = 0;i < m1->col * m1->row;++i)
         *(result->entry + i) = *(m1->entry + i) + x;
@@ -81,7 +81,7 @@ Matrix* addScale(Matrix* m1, double x){
 }
 
 Matrix *apply(Matrix *m1, act_f f){
-    Matrix* result = create(m1->row, m1->col);
+    Matrix* result = init_matrix(m1->row, m1->col);
     #pragma omp parallel for schedule(static)
     for (int i = 0;i < m1->col * m1->row;++i)
         *(result->entry + i) = f(*(m1->entry + i));
@@ -89,7 +89,7 @@ Matrix *apply(Matrix *m1, act_f f){
 }
 
 Matrix *transpose(Matrix *m1){
-    Matrix* result = create(m1->col, m1->row);
+    Matrix* result = init_matrix(m1->col, m1->row);
     #pragma omp parallel for schedule(static)
 
     for (int i = 0;i < m1->col;++i)
@@ -110,7 +110,7 @@ double doubleMax(double a, double b){
 }
 
 Matrix* softmax(Matrix *x){
-    Matrix* output = create(x->row, x->col);
+    Matrix* output = init_matrix(x->row, x->col);
     double maxElement = -1e9, sum = 0;
     for (int i = 0;i < x->col * x->row;i++) maxElement = doubleMax(maxElement, x->entry[i]);
     for (int i = 0;i < x->col * x->row;i++) sum += exp(x->entry[i] - maxElement);

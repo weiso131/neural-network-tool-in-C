@@ -1,20 +1,20 @@
 #include "nn.h"
 
-nn_node* Linear_init(int n, int m, Matrix* specify_w, Matrix* specify_b){
+nn_node* init_Linear(int n, int m, Matrix* specify_w, Matrix* specify_b){
     Linear *linear = malloc(sizeof(Linear));
     linear->w = specify_w;
     linear->b = specify_b;
     if (specify_w == NULL || specify_w->row != n || specify_w->col != m){
-        linear->w = create(n, m);
+        linear->w = init_matrix(n, m);
         random_fill(linear->w);
     }
     if (specify_b == NULL || specify_b->row != n || specify_b->col != 1){
-        linear->b = create(n, 1);
+        linear->b = init_matrix(n, 1);
         random_fill(linear->b);
     }
 
 
-    *linear = (Linear){linear->w, linear->b, create(n, m), create(n, m), create(n, 1), create(n, 1), Linear_forward, Linear_backward};
+    *linear = (Linear){linear->w, linear->b, init_matrix(n, m), init_matrix(n, m), init_matrix(n, 1), init_matrix(n, 1), Linear_forward, Linear_backward};
 
     fill(linear->vdw, 0);
     fill(linear->sdw, 0);
@@ -35,7 +35,7 @@ Matrix* Linear_forward(struct linear_* self, Matrix* x){
 }
 
 Matrix *db_calculate(Matrix *dz){
-    Matrix *db = create(dz->row, 1);
+    Matrix *db = init_matrix(dz->row, 1);
     for (int i = 0; i < dz->row;i++){
         for (int j = 0;j < dz->col;j++)
             db->entry[i] += dz->entry[i * dz->col + j];

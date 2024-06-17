@@ -28,13 +28,10 @@ typedef struct {
     nn_node (*ReLU)();
     nn_node (*sigmoid)();
     nn_node (*drop)(double);//drop的機率
-    nn_node (*softmax)();
-
-
 }nn;
 //nn是一個輔助物件 裡面存有一堆funtion的生成器 呼叫後會給出對應的nn_node
 
-nn* create_nn();
+nn* init_nn();
 
 
 
@@ -63,7 +60,7 @@ typedef struct linear_{
 
     */
 }Linear; 
-nn_node* Linear_init(int n, int m, Matrix* specify_w, Matrix* specify_b);//n, m, 指定w, 指定b
+nn_node* init_Linear(int n, int m, Matrix* specify_w, Matrix* specify_b);//n, m, 指定w, 指定b
 Matrix* Linear_forward(struct linear_* self, Matrix* x);
 Matrix* Linear_backward(struct linear_* self, Matrix* dz, Matrix* x, optim* optimizer);
 typedef struct act_func_{
@@ -85,13 +82,13 @@ typedef struct act_func_{
         計算dZ並回傳
 */
 
-//
+
 
 typedef struct relu_{
     Matrix* (*forward)(struct relu_* self, Matrix* x);
     Matrix* (*backward)(struct relu_* self, Matrix* dz, Matrix* x, optim* optimizer);
 }ReLU;
-nn_node* ReLU_init();
+nn_node* init_ReLU();
 Matrix* relu_forward(ReLU *self, Matrix *x);
 Matrix* relu_backward(ReLU *self, Matrix* dz, Matrix* x, optim* optimizer);
 
@@ -99,7 +96,7 @@ typedef struct sigmoid_{
     Matrix* (*forward)(struct sigmoid_* self, Matrix* x);
     Matrix* (*backward)(struct sigmoid_* self, Matrix* dz, Matrix* x, optim* optimizer);
 }Sigmoid;
-nn_node* sigmoid_init();
+nn_node* init_sigmoid();
 Matrix* sigmoid_forward(ReLU *self, Matrix *x);
 Matrix* sigmoid_backward(ReLU *self, Matrix* dz, Matrix* x, optim* optimizer);
 
@@ -111,7 +108,7 @@ typedef struct drop_{
     Matrix* (*forward)(struct drop_* self, Matrix* x);
     Matrix* (*backward)(struct drop_* self, Matrix* dz, Matrix* x, optim* optimizer);
 }Drop;
-nn_node* drop_init(double);
+nn_node* init_drop(double);
 Matrix *drop_forward(Drop* self, Matrix *x);
 Matrix *drop_backward(Drop* self, Matrix* dz, Matrix* x, optim* optimizer);
 /*

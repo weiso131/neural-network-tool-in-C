@@ -3,8 +3,8 @@
 
 int main(){
     loss_f* CE = init_CrossEntropy();
-    Matrix* predict = create(4, 1);
-    Matrix* label = create(4, 1);
+    Matrix* predict = init_matrix(4, 1);
+    Matrix* label = init_matrix(4, 1);
     double predict_entry[] = {0.0418, 0.0057, 0.1135, 0.8390};
     double label_entry[] = {1, 0, 0, 0};
     predict->entry = predict_entry;

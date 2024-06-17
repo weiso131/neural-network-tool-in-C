@@ -1,6 +1,6 @@
 #include "nn.h"
 #include<time.h>
-nn_node* drop_init(double drop_rate){
+nn_node* init_drop(double drop_rate){
     Drop *drop = malloc(sizeof(Drop));
 
     if (drop_rate <= 0 || drop_rate > 1){
@@ -14,7 +14,7 @@ nn_node* drop_init(double drop_rate){
     return drop_node;
 }
 Matrix *drop_forward(Drop* self, Matrix *x){
-    Matrix *output = create(x->row, x->col);
+    Matrix *output = init_matrix(x->row, x->col);
     double drop_rate = self->drop_rate;
     srand(time(NULL));
 
