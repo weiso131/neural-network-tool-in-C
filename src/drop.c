@@ -34,5 +34,5 @@ Matrix *drop_forward(Drop *self, Matrix *x){
 }
 
 Matrix *drop_backward(Drop* self, Matrix* dz, Matrix* x, optim* optimizer){
-    return self->drop_rate;
+    return self->drop_matrix;
 }
