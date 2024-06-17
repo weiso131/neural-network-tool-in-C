@@ -67,16 +67,14 @@ int main(){
 
     Model *myModel = init_model();
     myModel->add(myModel, init_Linear(data_col, 16, NULL, NULL));
-    myModel->add(myModel, init_ReLU());
-    myModel->add(myModel, init_Linear(16, 16, NULL, NULL));
-    myModel->add(myModel, init_ReLU());
+    myModel->add(myModel, init_sigmoid());
     myModel->add(myModel, init_Linear(16, target_col, NULL, NULL));
     
     printf("訓練前:\n");
     getAcc(trainDataloader, myModel, "train acc:");
     getAcc(validDataloader, myModel, "valid acc:");
 
-    myModel->train(myModel ,init_Adam(0.01, 0.9, 0.999, 1e-8), 1000, trainDataloader, validDataloader, init_CrossEntropy());
+    myModel->train(myModel ,init_Adam(0.001, 0.9, 0.999, 1e-8), 1000, trainDataloader, validDataloader, init_CrossEntropy());
 
     printf("訓練後:\n");
     getAcc(trainDataloader, myModel, "train acc:");

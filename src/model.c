@@ -51,12 +51,14 @@ void model_add_impl(Model *self, nn_node *newNode){
     self->end = newNode;
 }
 
-Matrix* forward(Model *self, Matrix *data, outputNode **outputLinklist){
+Matrix* forward(Model *self, Matrix *data, outputNode **outputLinklist, int trainModel){
     nn_node *SerialNode = self->begin;
     Matrix *result = data;
     while (SerialNode != NULL){
-        Matrix *new_result;
         NNtype member_type = SerialNode->menber_type;
+        if (trainModel == 0 && member_type == DROP) continue;//如果不是trainModel，跳過drop
+        Matrix *new_result;
+        
         if (member_type == LINEAR){
             Forward_type_transfor(Linear, SerialNode->nn_menber, new_result, result);
         }
@@ -77,7 +79,7 @@ Matrix* forward(Model *self, Matrix *data, outputNode **outputLinklist){
 }
 
 Matrix* predict_impl(Model *self, Matrix *data){
-    return forward(self, data, NULL);
+    return forward(self, data, NULL, 0);
 }
 
 void train_impl(Model *self, optim *optimizer, int epoch, dataloader *train_data, dataloader *valid_data, loss_f *loss_function){
@@ -92,7 +94,7 @@ void train_impl(Model *self, optim *optimizer, int epoch, dataloader *train_data
             Matrix *data = train_data->batches[batchNum]->data;
             Matrix *label = train_data->batches[batchNum]->label;
 
-            Matrix *predict = forward(self, data, &outputLinklist);
+            Matrix *predict = forward(self, data, &outputLinklist, 1);
             Matrix *dz = loss_function->get_gredient(predict, label);
             train_loss += loss_function->get_loss_item(predict, label);
             pop_outputNode(&outputLinklist);
@@ -123,7 +125,7 @@ void train_impl(Model *self, optim *optimizer, int epoch, dataloader *train_data
         for (int batchNum = 0;batchNum < validBatchLength;batchNum++){
             Matrix *data = valid_data->batches[batchNum]->data;
             Matrix *label = valid_data->batches[batchNum]->label;
-            Matrix *predict = forward(self, data, NULL);
+            Matrix *predict = self->predict(self, data);
             valid_loss += loss_function->get_loss_item(predict, label);
             free_matrix(predict);
         }

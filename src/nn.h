@@ -23,18 +23,6 @@ nn_menber 操作的本體
 menber_type 記錄他是甚麼操作
 */
 
-typedef struct {
-    nn_node (*Linear)(int, int); //代表輸入層與輸出層
-    nn_node (*ReLU)();
-    nn_node (*sigmoid)();
-    nn_node (*drop)(double);//drop的機率
-}nn;
-//nn是一個輔助物件 裡面存有一堆funtion的生成器 呼叫後會給出對應的nn_node
-
-nn* init_nn();
-
-
-
 typedef struct linear_{
     Matrix *w;//n x m
     Matrix *b;//n x 1
@@ -98,8 +86,8 @@ typedef struct sigmoid_{
     Matrix* (*backward)(struct sigmoid_* self, Matrix* dz, Matrix* x, optim* optimizer);
 }Sigmoid;
 nn_node* init_sigmoid();
-Matrix* sigmoid_forward(ReLU *self, Matrix *x);
-Matrix* sigmoid_backward(ReLU *self, Matrix* dz, Matrix* x, optim* optimizer);
+Matrix* sigmoid_forward(Sigmoid *self, Matrix *x);
+Matrix* sigmoid_backward(Sigmoid *self, Matrix* dz, Matrix* x, optim* optimizer);
 
 
 
