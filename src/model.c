@@ -1,8 +1,8 @@
 #include "model.h"
 
-#define Forward_type_transfor(type, void_member, result, data){\
+#define Forward_type_transfor(type, void_member, new_result, data){\
     type *member = (type *)void_member;\
-    result = member->forward(member, data);\
+    new_result = member->forward(member, data);\
 }
 #define Backward_type_transfor(type, void_member, dz, last_layer_output, optimizer){\
     type *member = (type *)void_member;\
@@ -56,7 +56,10 @@ Matrix* forward(Model *self, Matrix *data, outputNode **outputLinklist, int trai
     Matrix *result = data;
     while (SerialNode != NULL){
         NNtype member_type = SerialNode->menber_type;
-        if (trainModel == 0 && member_type == DROP) continue;//如果不是trainModel，跳過drop
+        if (trainModel == 0 && member_type == DROP) {
+            SerialNode = SerialNode->next;
+            continue;//如果不是trainModel，跳過drop
+        }
         Matrix *new_result;
         
         if (member_type == LINEAR){

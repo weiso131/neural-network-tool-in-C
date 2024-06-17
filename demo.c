@@ -29,6 +29,22 @@ Matrix **read_vectors(char* file, int *row, int *col){
     return vectors;
 }
 
+// void Serialize(Model *model, FILE *file){
+//     nn_node *SerialNode = model->begin;
+//     while (SerialNode != NULL){
+//         NNtype member_type = SerialNode->menber_type;
+
+//         if (member_type == LINEAR){
+//             Linear *
+//         }
+//         SerialNode = SerialNode->next;
+
+        
+            
+//     }
+// }
+
+
 void getAcc(dataloader *loader, Model *model, char *Name){
     double acc = 0, total = loader->data_length;
 
@@ -66,15 +82,15 @@ int main(){
     dataloader *validDataloader = init_dataloader(data + 800, target + 800, 64, 91, 1);
 
     Model *myModel = init_model();
-    myModel->add(myModel, init_Linear(data_col, 16, NULL, NULL));
-    myModel->add(myModel, init_sigmoid());
-    myModel->add(myModel, init_Linear(16, target_col, NULL, NULL));
+    myModel->add(myModel, init_Linear(data_col, 4, NULL, NULL));
+    myModel->add(myModel, init_ReLU());
+    myModel->add(myModel, init_Linear(4, target_col, NULL, NULL));
     
     printf("訓練前:\n");
     getAcc(trainDataloader, myModel, "train acc:");
     getAcc(validDataloader, myModel, "valid acc:");
 
-    myModel->train(myModel ,init_Adam(0.001, 0.9, 0.999, 1e-8), 1000, trainDataloader, validDataloader, init_CrossEntropy());
+    myModel->train(myModel ,init_Adam(0.01, 0.9, 0.999, 1e-8), 1000, trainDataloader, validDataloader, init_CrossEntropy());
 
     printf("訓練後:\n");
     getAcc(trainDataloader, myModel, "train acc:");

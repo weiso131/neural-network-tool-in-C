@@ -16,23 +16,20 @@ nn_node* init_drop(double drop_rate){
 Matrix *drop_forward(Drop *self, Matrix *x){
     if (!self->drop_matrix)
         self->drop_matrix = init_matrix(x->row, x->col);
-    Matrix *output = init_matrix(x->row, x->col);
     double drop_rate = self->drop_rate;
     srand(time(NULL));
 
     for (int i = 0;i < x->row * x->col; i++){
         if ((double)rand() / (double)RAND_MAX < drop_rate)
-            self->drop_matrix->entry[i] = output->entry[i] = 0;
-        else{
-            output->entry[i] = x->entry[i];
+            self->drop_matrix->entry[i] = 0;
+        else
             self->drop_matrix->entry[i] = 1 / (1 - drop_rate);
-        }
     }
         
 
-    return output;
+    return dot(x, self->drop_matrix);
 }
 
 Matrix *drop_backward(Drop* self, Matrix* dz, Matrix* x, optim* optimizer){
-    return self->drop_matrix;
+    return dot(self->drop_matrix, dz);
 }
